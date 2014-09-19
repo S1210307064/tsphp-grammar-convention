@@ -1,7 +1,7 @@
 # TSPHP-grammar-convention
 
 This repository provides a [CheckStyle](http://checkstyle.sourceforge.net/) module which allows to check whether 
-grammar files adhere to [TSPHP's grammar convention](https://tsphp.ch/wiki/display/TSPHP/Grammar+Convention+of+TSPHP)  
+grammar files adhere to [TSPHP's grammar convention](http://tsphp.ch/wiki/display/TSPHP/Grammar+Convention+of+TSPHP)  
 
 Please visit the [project's website](http://tsphp.ch/) for more information about TSPHP.
 Use the project's [issue tracking system](http://tsphp.ch/jira) (JIRA) to report bugs or submit feature requests.
