@@ -9,4 +9,32 @@
     <property environment="env"/>
     <import file="${basedir}/ant/build-common.xml" as="common"/>
 
+    <!-- for consistency purposes this target exists even though it does not copy anything at the moment -->
+    <target name="cp.all" depends="">
+        <echo>No dependencies at the moment, did not copy anything.</echo>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Specialised PATH: libset includes checkstyle.jar                   -->
+    <!-- ================================================================== -->
+    <path id="libset">
+        <fileset dir="${lib}" includes="*.jar"/>
+        <fileset dir="${libdev}/checkstyle" includes="checkstyle*.jar"/>
+    </path>
+
+    <!-- ================================================================== -->
+    <!-- Specialised PATH: checkStylePath will include this projects' jar   -->
+    <!-- ================================================================== -->
+    <path id="checkStyleClassPath">
+        <fileset dir="${lib}">
+            <include name="antlr*.jar"/>
+        </fileset>
+        <path refid="libsetdev"/>
+        <fileset dir="${target}/lib">
+            <include name="TSPHP-grammar-convention-*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="checkstyle" depends="jar, common.checkstyle"/>
+
 </project>
