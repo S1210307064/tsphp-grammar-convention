@@ -76,8 +76,6 @@ public class GrammarWalkerErrorTest
         LocalizedMessage localizedMessage = messages.getMessages().first();
         assertThat(localizedMessage.getKey(), is("general.exception"));
         assertThat(localizedMessage.getSeverityLevel(), is(SeverityLevel.ERROR));
-        assertThat(localizedMessage.getMessage(), is("Got an exception - "
-                + "java.io.FileNotFoundException: nonExistingFile (The system cannot find the file specified)"));
     }
 
 
