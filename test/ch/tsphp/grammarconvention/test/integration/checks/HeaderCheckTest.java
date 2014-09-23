@@ -430,7 +430,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("@lexera::header{");
+        lines.add("@lexer::header{");
         lines.add("/*");
         lines.add(" */");
         lines.add("}");

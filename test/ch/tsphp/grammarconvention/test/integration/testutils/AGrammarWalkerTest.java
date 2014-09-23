@@ -8,6 +8,7 @@ package ch.tsphp.grammarconvention.test.integration.testutils;
 
 import ch.tsphp.grammarconvention.AGrammarConventionCheck;
 import ch.tsphp.grammarconvention.GrammarWalker;
+import com.google.common.collect.ImmutableMap;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
@@ -81,6 +82,7 @@ public abstract class AGrammarWalkerTest
         Configuration config = mock(Configuration.class);
         when(config.getAttributeNames()).thenReturn(new String[]{});
         when(config.getChildren()).thenReturn(new Configuration[]{});
+        when(config.getMessages()).thenReturn(mock(ImmutableMap.class));
         return config;
     }
 
@@ -97,6 +99,7 @@ public abstract class AGrammarWalkerTest
         }
         when(childConfig.getAttributeNames()).thenReturn(attributeNames);
         when(childConfig.getChildren()).thenReturn(new Configuration[]{});
+        when(childConfig.getMessages()).thenReturn(mock(ImmutableMap.class));
         return childConfig;
     }
 
