@@ -78,7 +78,6 @@ public class GrammarWalkerErrorTest
         assertThat(localizedMessage.getSeverityLevel(), is(SeverityLevel.ERROR));
     }
 
-
     protected DummyGrammarWalker createGrammarWalker(ModuleFactory moduleFactory) {
         DummyGrammarWalker walker = new DummyGrammarWalker();
         walker.setModuleFactory(moduleFactory);

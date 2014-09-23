@@ -8,19 +8,16 @@ package ch.tsphp.grammarconvention.test.integration;
 
 import ch.tsphp.grammarconvention.AGrammarConventionCheck;
 import ch.tsphp.grammarconvention.GrammarWalker;
+import ch.tsphp.grammarconvention.test.integration.testutils.AGrammarWalkerTest;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import org.antlr.grammar.v3.ANTLRParser;
 import org.antlr.tool.GrammarAST;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 import org.mockito.ArgumentCaptor;
-import org.mockito.exceptions.base.MockitoAssertionError;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +31,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class GrammarWalkerTest
+public class GrammarWalkerTest extends AGrammarWalkerTest
 {
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
 
     private class DummyCheck extends AGrammarConventionCheck
     {
@@ -52,7 +47,7 @@ public class GrammarWalkerTest
         DummyCheck check = spy(new DummyCheck());
         ModuleFactory moduleFactory = mock(ModuleFactory.class);
         when(moduleFactory.createModule(anyString())).thenReturn(check);
-        Configuration config = createDummyConfiguration();
+        Configuration config = createDummyChildConfiguration();
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -83,7 +78,7 @@ public class GrammarWalkerTest
         when(check.getDefaultTokens()).thenReturn(new int[]{ANTLRParser.OPTIONS});
         ModuleFactory moduleFactory = mock(ModuleFactory.class);
         when(moduleFactory.createModule(anyString())).thenReturn(check);
-        Configuration config = createDummyConfiguration();
+        Configuration config = createDummyChildConfiguration();
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -117,7 +112,7 @@ public class GrammarWalkerTest
         when(check.getDefaultTokens()).thenReturn(new int[]{ANTLRParser.OPTIONS});
         ModuleFactory moduleFactory = mock(ModuleFactory.class);
         when(moduleFactory.createModule(anyString())).thenReturn(check);
-        Configuration config = createDummyConfiguration();
+        Configuration config = createDummyChildConfiguration();
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -151,7 +146,7 @@ public class GrammarWalkerTest
         when(check.getDefaultTokens()).thenReturn(new int[]{ANTLRParser.RULE});
         ModuleFactory moduleFactory = mock(ModuleFactory.class);
         when(moduleFactory.createModule(anyString())).thenReturn(check);
-        Configuration config = createDummyConfiguration();
+        Configuration config = createDummyChildConfiguration();
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -167,49 +162,7 @@ public class GrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        try {
-            ArgumentCaptor<GrammarAST> captor = ArgumentCaptor.forClass(GrammarAST.class);
-            verify(check).visitToken(captor.capture());
-            fail("visitToken was called " + captor.getAllValues().size() + " time(s)");
-        } catch (MockitoAssertionError e) {
-            //should get exception since visitToken should not have been called
-        }
-        try {
-            ArgumentCaptor<GrammarAST> captor = ArgumentCaptor.forClass(GrammarAST.class);
-            verify(check).leaveToken(captor.capture());
-            fail("leaveToken was called " + captor.getAllValues().size() + " time(s)");
-        } catch (MockitoAssertionError e) {
-            //should get exception since leaveToken should not have been called
-        }
+        verifyVisitAndLeaveTokenNotCalled(check);
     }
 
-    protected GrammarWalker createGrammarWalker(ModuleFactory moduleFactory) {
-        GrammarWalker walker = new GrammarWalker();
-        walker.setModuleFactory(moduleFactory);
-        return walker;
-    }
-
-    public static File createFile(TemporaryFolder folder, List<String> lines) throws IOException {
-        File file = folder.newFile("test.g");
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(file);
-            for (String string : lines) {
-                writer.write(string);
-                writer.write("\n");
-            }
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
-        }
-        return file;
-    }
-
-    private Configuration createDummyConfiguration() {
-        Configuration config = mock(Configuration.class);
-        when(config.getAttributeNames()).thenReturn(new String[]{});
-        when(config.getChildren()).thenReturn(new Configuration[]{});
-        return config;
-    }
 }

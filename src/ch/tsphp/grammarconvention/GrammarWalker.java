@@ -159,7 +159,8 @@ public class GrammarWalker extends AbstractFileSetCheck
 
         /* TODO rstoll CheckStyle uses a cache to avoid checking files multiple times.
           I am actually not sure if it is necessary, files should be processed only once anyway IMO.
-          But I guess this is for versions where the process is kept alive and re-checking is only done for files which
+          But I guess this is for versions -where the process is kept alive- (cache could be written in tmp folder)
+          and re-checking is only done for files which
           have been changed. Makes perfect sense. Yet, since TSPHP is using it only in ant build so far it is not
           necessary to have a cache.
           */
