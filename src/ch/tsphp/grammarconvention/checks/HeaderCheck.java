@@ -85,11 +85,6 @@ public class HeaderCheck extends AGrammarConventionCheck
         }
     }
 
-    //CheckStyle made log final and thus cannot be used in verification of tests.
-    public void logIt(int line, String key) {
-        log(line, key);
-    }
-
     private boolean isNotGrammarAction(GrammarAST ast) {
         int parentType = ast.getParent().getType();
         return parentType != ANTLRParser.LEXER_GRAMMAR

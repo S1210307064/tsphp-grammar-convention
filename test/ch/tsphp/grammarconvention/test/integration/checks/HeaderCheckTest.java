@@ -15,7 +15,6 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
 import org.antlr.tool.GrammarAST;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.exceptions.base.MockitoAssertionError;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,12 +25,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class HeaderCheckTest extends AGrammarWalkerTest
 {
@@ -39,8 +36,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_HeaderFilePropertyNotSpecified_ThrowsIllegalStateException()
             throws CheckstyleException, IOException {
         HeaderCheck check = createCheck();
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
         Configuration config = createDummyChildConfiguration();
 
         List<String> lines = new ArrayList<>();
@@ -61,8 +57,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_HeaderFilePropertyEmpty_ThrowsIllegalStateException()
             throws CheckstyleException, IOException {
         HeaderCheck check = createCheck();
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
         Configuration config = createChildConfiguration("HeaderCheck",new String[][]{{"headerFile",""}});
 
         List<String> lines = new ArrayList<>();
@@ -83,8 +78,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_HeaderFileNotFound_ThrowsIllegalStateException()
             throws CheckstyleException, IOException {
         HeaderCheck check = createCheck();
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
         File file = new File("nonExistingFile");
         Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(file));
 
@@ -101,8 +95,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_HeaderFileEmpty_ThrowsIllegalStateException()
             throws CheckstyleException, IOException {
         HeaderCheck check = createCheck();
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
         File file = createFile("licenseHeader.txt", new String[]{""});
         Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(file));
 
@@ -119,8 +112,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithoutHeaderSections_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -143,8 +135,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWitMemberSectionsButNotHeader_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -170,8 +161,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWitRuleHeaderButWithoutHeader_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -198,8 +188,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_LexerGrammarWitRuleHeaderButWithoutHeader_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("lexer grammar test;");
@@ -225,8 +214,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_ParserGrammarWitRuleHeaderButWithoutHeader_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("parser grammar test;");
@@ -252,8 +240,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_TreeGrammarWitRuleHeaderButWithoutHeader_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("tree grammar test;");
@@ -279,8 +266,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithHeaderWithoutNotice_CheckIsPerformedAndLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -307,8 +293,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithParserHeaderWithoutNotice_CheckIsPerformedAndLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -335,8 +320,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithLexerHeaderWithoutNotice_CheckIsPerformedAndLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -363,8 +347,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithHeaderNoticeHalfDone_CheckIsPerformedAndLogCalledForAppropriateLine()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -394,8 +377,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithParserHeaderNoticeHalfDone_CheckIsPerformedAndLogCalledForAppropriateLine()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -425,8 +407,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithLexerHeaderNoticeHalfDone_CheckIsPerformedAndLogCalledForAppropriateLine()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -456,8 +437,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithHeaderWithFullNotice_CheckIsPerformedAndNoLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -479,15 +459,14 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.process(file, lines);
 
         verify(check).visitToken(any(GrammarAST.class));
-        verifyLogNotCalled(check);
+        verifyLogItNotCalled(check);
     }
 
     @Test
     public void processFiltered_GrammarWithParserHeaderWithFullNotice_CheckIsPerformedAndNoLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -509,15 +488,14 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.process(file, lines);
 
         verify(check).visitToken(any(GrammarAST.class));
-        verifyLogNotCalled(check);
+        verifyLogItNotCalled(check);
     }
 
     @Test
     public void processFiltered_GrammarWithLexerHeaderWithFullNotice_CheckIsPerformedAndNoLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -539,15 +517,14 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.process(file, lines);
 
         verify(check).visitToken(any(GrammarAST.class));
-        verifyLogNotCalled(check);
+        verifyLogItNotCalled(check);
     }
 
     @Test
     public void processFiltered_GrammarWithHeaderInOneLineNotice_CheckIsPerformedAndNoLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -565,15 +542,14 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.process(file, lines);
 
         verify(check).visitToken(any(GrammarAST.class));
-        verifyLogNotCalled(check);
+        verifyLogItNotCalled(check);
     }
 
     @Test
     public void processFiltered_GrammarWithParserHeaderInOneLineNotice_CheckIsPerformedAndNoLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = mock(ModuleFactory.class);
-        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        ModuleFactory moduleFactory = createModuleFactory(check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -591,7 +567,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.process(file, lines);
 
         verify(check).visitToken(any(GrammarAST.class));
-        verifyLogNotCalled(check);
+        verifyLogItNotCalled(check);
     }
 
     protected HeaderCheck createCheck() {
@@ -600,14 +576,5 @@ public class HeaderCheckTest extends AGrammarWalkerTest
 
     private String[][] getHeaderFileAttribute(File file) {
         return new String[][]{{"headerFile", file.getPath()}};
-    }
-
-    private void verifyLogNotCalled(HeaderCheck check) {
-        try {
-            verify(check).logIt(anyInt(), anyString());
-            fail("logIt was called even though it was not expected");
-        }catch(MockitoAssertionError e){
-            //that's fine, should fail since verify failed
-        }
     }
 }

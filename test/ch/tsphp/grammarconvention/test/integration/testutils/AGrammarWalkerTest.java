@@ -8,6 +8,7 @@ package ch.tsphp.grammarconvention.test.integration.testutils;
 
 import ch.tsphp.grammarconvention.AGrammarConventionCheck;
 import ch.tsphp.grammarconvention.GrammarWalker;
+import ch.tsphp.grammarconvention.checks.OptionsSpaceCheck;
 import com.google.common.collect.ImmutableMap;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -26,6 +27,8 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -109,5 +112,20 @@ public abstract class AGrammarWalkerTest
 
     protected File createFile(String fileName, Collection<String> lines) throws IOException {
         return FileHelper.createFile(folder, fileName, lines);
+    }
+
+    protected ModuleFactory createModuleFactory(AGrammarConventionCheck check) throws CheckstyleException {
+        ModuleFactory moduleFactory = mock(ModuleFactory.class);
+        when(moduleFactory.createModule(anyString())).thenReturn(check);
+        return moduleFactory;
+    }
+
+    protected void verifyLogItNotCalled(AGrammarConventionCheck check) {
+        try {
+            verify(check).logIt(anyInt(), anyString());
+            fail("logIt was called even though it was not expected");
+        }catch(MockitoAssertionError e){
+            //that's fine, should fail since verify failed
+        }
     }
 }

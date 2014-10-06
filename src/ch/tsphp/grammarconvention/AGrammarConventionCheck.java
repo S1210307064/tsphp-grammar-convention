@@ -25,4 +25,9 @@ public abstract class AGrammarConventionCheck extends Check
 
     public void leaveToken(GrammarAST ast) {
     }
+
+    //CheckStyle made log final and thus cannot be used in verification of tests.
+    public void logIt(int line, String key) {
+        log(line, key);
+    }
 }
