@@ -7,7 +7,7 @@
 package ch.tsphp.grammarconvention.test.integration.checks;
 
 import ch.tsphp.grammarconvention.GrammarWalker;
-import ch.tsphp.grammarconvention.checks.OptionsSpaceCheck;
+import ch.tsphp.grammarconvention.checks.OptionsIndentationCheck;
 import ch.tsphp.grammarconvention.test.integration.testutils.AGrammarWalkerTest;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -21,13 +21,13 @@ import java.util.List;
 
 import static org.mockito.Mockito.spy;
 
-public class OptionsSpaceCheckTest extends AGrammarWalkerTest
+public class OptionsIndentationCheckTest extends AGrammarWalkerTest
 {
     @Test
     public void processFiltered_WithoutOptions_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
-        OptionsSpaceCheck check = spy(createCheck());
-        String moduleName = "OptionsSpaceCheck";
+        OptionsIndentationCheck check = spy(createCheck());
+        String moduleName = "OptionsIndentationCheck";
         ModuleFactory moduleFactory = createModuleFactory(moduleName, check);
 
         List<String> lines = new ArrayList<>();
@@ -46,11 +46,11 @@ public class OptionsSpaceCheckTest extends AGrammarWalkerTest
         verifyVisitAndLeaveTokenNotCalled(check);
     }
 
-    //Tests for grammar options are covered in OptionsSpaceCheckGrammarTest
-    //Tests for rule options are covered in OptionsSpaceCheckRuleTest
+    //Tests for grammar options are covered in OptionsIndentationCheckGrammarTest
+    //Tests for rule options are covered in OptionsIndentationCheckRuleTest
 
-    protected OptionsSpaceCheck createCheck() {
-        return new OptionsSpaceCheck();
+    protected OptionsIndentationCheck createCheck() {
+        return new OptionsIndentationCheck();
     }
 
 }

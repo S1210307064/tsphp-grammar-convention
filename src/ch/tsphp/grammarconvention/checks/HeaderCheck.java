@@ -48,7 +48,7 @@ public class HeaderCheck extends AGrammarConventionCheck
     }
 
     @Override
-    public void visitToken(GrammarAST ast) {
+    public void visitToken(final GrammarAST ast) {
         if (isNotGrammarAction(ast)) {
             return;
         }

@@ -18,7 +18,9 @@ public class OptionsSpaceCheck extends AGrammarConventionCheck
         withSpacesAroundEqual = withSpaces;
     }
 
-    public boolean getWithSpacesAroundEqual(){return withSpacesAroundEqual;}
+    public boolean needsSpacesAroundEqual() {
+        return withSpacesAroundEqual;
+    }
 
     @Override
     public int[] getDefaultTokens() {
@@ -26,7 +28,7 @@ public class OptionsSpaceCheck extends AGrammarConventionCheck
     }
 
     @Override
-    public void visitToken(GrammarAST ast) {
+    public void visitToken(final GrammarAST ast) {
         final int count = ast.getChildCount();
         for (int i = 0; i < count; ++i) {
             final GrammarAST equalSign = (GrammarAST) ast.getChild(i);
@@ -50,10 +52,6 @@ public class OptionsSpaceCheck extends AGrammarConventionCheck
                 }
             }
         }
-    }
-
-    private boolean isOnSameLine(GrammarAST left, GrammarAST right) {
-        return left.getLine() == right.getLine();
     }
 
     private boolean isSpaceBetween(GrammarAST left, GrammarAST right) {

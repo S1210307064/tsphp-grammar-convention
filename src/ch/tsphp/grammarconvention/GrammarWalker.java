@@ -104,7 +104,7 @@ public class GrammarWalker extends AbstractFileSetCheck
     }
 
     @Override
-    public void setupChild(Configuration childConf) throws CheckstyleException {
+    public void setupChild(final Configuration childConf) throws CheckstyleException {
         final String name = childConf.getName();
         final Object module = moduleFactory.createModule(name);
         if (!(module instanceof AGrammarConventionCheck)) {
@@ -118,7 +118,7 @@ public class GrammarWalker extends AbstractFileSetCheck
         registerCheck(check);
     }
 
-    private void registerCheck(AGrammarConventionCheck check) throws CheckstyleException {
+    private void registerCheck(final AGrammarConventionCheck check) throws CheckstyleException {
         final int[] tokens;
         final Set<String> checkTokens = check.getTokenNames();
         if (!checkTokens.isEmpty()) {
@@ -146,16 +146,16 @@ public class GrammarWalker extends AbstractFileSetCheck
         checks.add(check);
     }
 
-    private void registerCheck(int tokenId, AGrammarConventionCheck check) {
+    private void registerCheck(final int tokenId, final AGrammarConventionCheck check) {
         registerCheck(TokenTypes.getTokenName(tokenId), check);
     }
 
-    private void registerCheck(String token, AGrammarConventionCheck check) {
+    private void registerCheck(final String token, final AGrammarConventionCheck check) {
         tokenToChecks.put(token, check);
     }
 
     @Override
-    protected void processFiltered(File file, List<String> lines) {
+    protected void processFiltered(final File file, final List<String> lines) {
 
         /* TODO rstoll CheckStyle uses a cache to avoid checking files multiple times.
           I am actually not sure if it is necessary, files should be processed only once anyway IMO.
@@ -183,7 +183,7 @@ public class GrammarWalker extends AbstractFileSetCheck
         }
     }
 
-    protected GrammarAST getGrammarAST(File file) throws IOException, RecognitionException {
+    protected GrammarAST getGrammarAST(final File file) throws IOException, RecognitionException {
         String fileName = file.getName();
         ANTLRLexer lexer = new ANTLRLexer(new ANTLRReaderStream(new FileReader(file)));
         lexer.setFileName(fileName);
@@ -195,7 +195,7 @@ public class GrammarWalker extends AbstractFileSetCheck
         return parser.grammar_(grammar).getTree();
     }
 
-    private void walk(GrammarAST ast, FileContents contents) {
+    private void walk(final GrammarAST ast, final FileContents contents) {
         getMessageCollector().reset();
 
         notifyBegin(ast, contents);
@@ -209,7 +209,7 @@ public class GrammarWalker extends AbstractFileSetCheck
      * @param rootAst  the root of the tree
      * @param contents the contents of the file the AST was generated from
      */
-    private void notifyBegin(GrammarAST rootAst, FileContents contents) {
+    private void notifyBegin(final GrammarAST rootAst, final FileContents contents) {
         for (AGrammarConventionCheck check : checks) {
             check.setFileContents(contents);
             check.beginTree(rootAst);
@@ -221,13 +221,13 @@ public class GrammarWalker extends AbstractFileSetCheck
      *
      * @param rootAst the root of the tree
      */
-    private void notifyEnd(GrammarAST rootAst) {
+    private void notifyEnd(final GrammarAST rootAst) {
         for (AGrammarConventionCheck check : checks) {
             check.finishTree(rootAst);
         }
     }
 
-    private void processRec(GrammarAST ast) {
+    private void processRec(final GrammarAST ast) {
         if (ast == null) {
             return;
         }
@@ -254,7 +254,7 @@ public class GrammarWalker extends AbstractFileSetCheck
      *
      * @param ast the node to notify for
      */
-    private void notifyVisit(GrammarAST ast) {
+    private void notifyVisit(final GrammarAST ast) {
         final Collection<AGrammarConventionCheck> visitors =
                 tokenToChecks.get(TokenTypes.getTokenName(ast.getType()));
         for (AGrammarConventionCheck check : visitors) {
@@ -267,7 +267,7 @@ public class GrammarWalker extends AbstractFileSetCheck
      *
      * @param ast the node to notify for
      */
-    private void notifyLeave(GrammarAST ast) {
+    private void notifyLeave(final GrammarAST ast) {
         final Collection<AGrammarConventionCheck> visitors =
                 tokenToChecks.get(TokenTypes.getTokenName(ast.getType()));
         for (AGrammarConventionCheck check : visitors) {

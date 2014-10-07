@@ -23,21 +23,21 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 public class HeaderCheckTest extends AGrammarWalkerTest
 {
+    private static final String MODULE_NAME = "HeaderCheck";
+
     @Test(expected = IllegalStateException.class)
     public void processFiltered_HeaderFilePropertyNotSpecified_ThrowsIllegalStateException()
             throws CheckstyleException, IOException {
         HeaderCheck check = createCheck();
-        ModuleFactory moduleFactory = createModuleFactory(check);
-        Configuration config = createDummyChildConfiguration();
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -57,8 +57,8 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_HeaderFilePropertyEmpty_ThrowsIllegalStateException()
             throws CheckstyleException, IOException {
         HeaderCheck check = createCheck();
-        ModuleFactory moduleFactory = createModuleFactory(check);
-        Configuration config = createChildConfiguration("HeaderCheck",new String[][]{{"headerFile",""}});
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{{"headerFile", ""}});
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -78,9 +78,9 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_HeaderFileNotFound_ThrowsIllegalStateException()
             throws CheckstyleException, IOException {
         HeaderCheck check = createCheck();
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
         File file = new File("nonExistingFile");
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(file));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(file));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -95,9 +95,9 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_HeaderFileEmpty_ThrowsIllegalStateException()
             throws CheckstyleException, IOException {
         HeaderCheck check = createCheck();
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
         File file = createFile("licenseHeader.txt", new String[]{""});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(file));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(file));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -112,7 +112,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithoutHeaderSections_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -120,7 +120,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -135,7 +135,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWitMemberSectionsButNotHeader_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -146,7 +146,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -161,7 +161,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWitRuleHeaderButWithoutHeader_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -172,7 +172,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -188,7 +188,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_LexerGrammarWitRuleHeaderButWithoutHeader_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("lexer grammar test;");
@@ -199,7 +199,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -214,7 +214,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_ParserGrammarWitRuleHeaderButWithoutHeader_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("parser grammar test;");
@@ -225,7 +225,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -240,7 +240,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_TreeGrammarWitRuleHeaderButWithoutHeader_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("tree grammar test;");
@@ -251,7 +251,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -266,7 +266,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithHeaderWithoutNotice_CheckIsPerformedAndLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -275,7 +275,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -293,7 +293,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithParserHeaderWithoutNotice_CheckIsPerformedAndLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -302,7 +302,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -320,7 +320,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithLexerHeaderWithoutNotice_CheckIsPerformedAndLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -329,7 +329,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -347,7 +347,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithHeaderNoticeHalfDone_CheckIsPerformedAndLogCalledForAppropriateLine()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -359,7 +359,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/*", " * copyright by Robert Stoll", " */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -377,7 +377,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithParserHeaderNoticeHalfDone_CheckIsPerformedAndLogCalledForAppropriateLine()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -389,7 +389,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/*", " * copyright by Robert Stoll", " */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -407,7 +407,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithLexerHeaderNoticeHalfDone_CheckIsPerformedAndLogCalledForAppropriateLine()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -419,7 +419,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/*", " * copyright by Robert Stoll", " */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -437,7 +437,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithHeaderWithFullNotice_CheckIsPerformedAndNoLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -450,7 +450,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/*", " * copyright by Robert Stoll", " */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -466,7 +466,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithParserHeaderWithFullNotice_CheckIsPerformedAndNoLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -479,7 +479,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/*", " * copyright by Robert Stoll", " */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -495,7 +495,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithLexerHeaderWithFullNotice_CheckIsPerformedAndNoLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -508,7 +508,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/*", " * copyright by Robert Stoll", " */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -524,7 +524,8 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithHeaderInOneLineNotice_CheckIsPerformedAndNoLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -533,7 +534,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);
@@ -549,7 +550,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
     public void processFiltered_GrammarWithParserHeaderInOneLineNotice_CheckIsPerformedAndNoLogCalled()
             throws CheckstyleException, IOException {
         HeaderCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(check);
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
@@ -558,7 +559,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
-        Configuration config = createChildConfiguration("HeaderCheck", getHeaderFileAttribute(headerFile));
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
         GrammarWalker walker = createGrammarWalker(moduleFactory);

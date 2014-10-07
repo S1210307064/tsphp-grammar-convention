@@ -15,11 +15,11 @@ import static org.hamcrest.core.Is.is;
 public class OptionsSpaceCheckTest
 {
     @Test
-    public void construct_Standard_SpaceRequiredIsTrue(){
+    public void construct_Standard_SpaceRequiredIsTrue() {
         //no arrange necessary
 
         OptionsSpaceCheck check = new OptionsSpaceCheck();
 
-        assertThat(check.getWithSpacesAroundEqual(), is(true));
+        assertThat(check.needsSpacesAroundEqual(), is(true));
     }
 }
