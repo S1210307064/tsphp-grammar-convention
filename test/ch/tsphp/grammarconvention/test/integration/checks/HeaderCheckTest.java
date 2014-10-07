@@ -46,10 +46,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         //assert in @Test
     }
@@ -67,10 +64,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         File file = createFile("test.g", lines);
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         //assert in @Test
     }
@@ -124,10 +118,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verifyVisitAndLeaveTokenNotCalled(check);
     }
@@ -150,10 +141,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verifyVisitAndLeaveTokenNotCalled(check);
     }
@@ -176,10 +164,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verifyVisitAndLeaveTokenNotCalled(check);
     }
@@ -203,10 +188,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verifyVisitAndLeaveTokenNotCalled(check);
     }
@@ -229,10 +211,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verifyVisitAndLeaveTokenNotCalled(check);
     }
@@ -255,10 +234,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verifyVisitAndLeaveTokenNotCalled(check);
     }
@@ -279,10 +255,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -306,10 +279,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -333,10 +303,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -363,10 +330,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -393,10 +357,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -423,10 +384,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -454,10 +412,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -483,10 +438,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -512,10 +464,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -538,10 +487,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -563,10 +509,57 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
+
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        verifyLogItNotCalled(check);
+    }
+
+    @Test
+    public void processFiltered_GrammarWithLexerHeaderInOneLineNotice_CheckIsPerformedAndNoLogCalled()
+            throws CheckstyleException, IOException {
+        HeaderCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("@lexer::header{/* copyright by Robert Stoll */}");
+        lines.add("rule: EOF;");
+        File file = createFile("test.g", lines);
+
+        File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
+
+        //act
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
+
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        verifyLogItNotCalled(check);
+    }
+
+    @Test
+    public void processFiltered_GrammarWithHeaderLongerThanNotice_CheckIsPerformedAndNoLogCalled()
+            throws CheckstyleException, IOException {
+        HeaderCheck check = spy(createCheck());
+
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("@header{");
+        lines.add("/* copyright by Robert Stoll */");
+        lines.add("//just a superfluous comment");
+        lines.add("//just a superfluous comment");
+        lines.add("//just a superfluous comment");
+        lines.add("}");
+        lines.add("rule: EOF;");
+        File file = createFile("test.g", lines);
+
+        File headerFile = createFile("licenseHeader.txt", new String[]{"/* copyright by Robert Stoll */"});
+        Configuration config = createChildConfiguration(MODULE_NAME, getHeaderFileAttribute(headerFile));
+
+        //act
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);

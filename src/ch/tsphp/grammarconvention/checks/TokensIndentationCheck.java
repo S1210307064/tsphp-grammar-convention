@@ -37,7 +37,7 @@ public class TokensIndentationCheck extends OptionsIndentationCheck
         int equalSignPositionInLine = imaginaryToken.getToken().getCharPositionInLine();
         if (equalSignPositionInLine != NUMBER_OF_SPACES) {
             logIt(imaginaryToken.getLine(), "imaginary token should be intended by "
-                    + NUMBER_OF_SPACES * 2 + " spaces but was intended by " + equalSignPositionInLine);
+                    + NUMBER_OF_SPACES + " spaces but was intended by " + equalSignPositionInLine);
         }
     }
 

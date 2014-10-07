@@ -74,7 +74,8 @@ public class HeaderCheck extends AGrammarConventionCheck
             if (numberOfLines - start == 0) {
                 logIt(ast.getLine(), "License notice is missing.");
             } else {
-                for (int i = start; i < numberOfLines; ++i) {
+                final int count = licenceNotice.size() + start;
+                for (int i = start; i < numberOfLines && i < count; ++i) {
                     if (!lines[i].equals(licenceNotice.get(i - start))) {
                         logIt(ast.getLine() + i, "License missing or wrong. Mismatch found!\n"
                                 + "excepted: " + licenceNotice.get(i) + "\n"

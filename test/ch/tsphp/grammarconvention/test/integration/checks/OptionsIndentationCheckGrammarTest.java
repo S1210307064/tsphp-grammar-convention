@@ -6,7 +6,6 @@
 
 package ch.tsphp.grammarconvention.test.integration.checks;
 
-import ch.tsphp.grammarconvention.GrammarWalker;
 import ch.tsphp.grammarconvention.checks.OptionsIndentationCheck;
 import ch.tsphp.grammarconvention.test.integration.testutils.AGrammarWalkerTest;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
@@ -63,10 +62,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -94,10 +90,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(moduleName, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -123,10 +116,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -154,10 +144,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 3);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -185,10 +172,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -215,10 +199,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -247,10 +228,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -280,10 +258,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -324,10 +299,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 7);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -354,10 +326,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -386,10 +355,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -419,10 +385,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -463,10 +426,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 7);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -495,10 +455,8 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
+
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -528,10 +486,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -561,10 +516,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -598,10 +550,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);

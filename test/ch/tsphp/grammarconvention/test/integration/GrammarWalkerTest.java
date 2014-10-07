@@ -7,7 +7,6 @@
 package ch.tsphp.grammarconvention.test.integration;
 
 import ch.tsphp.grammarconvention.AGrammarConventionCheck;
-import ch.tsphp.grammarconvention.GrammarWalker;
 import ch.tsphp.grammarconvention.test.integration.testutils.AGrammarWalkerTest;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
@@ -56,10 +55,7 @@ public class GrammarWalkerTest extends AGrammarWalkerTest
         File file = createFile(folder, lines);
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         ArgumentCaptor<GrammarAST> captor = ArgumentCaptor.forClass(GrammarAST.class);
         verify(check).beginTree(captor.capture());
@@ -90,10 +86,7 @@ public class GrammarWalkerTest extends AGrammarWalkerTest
         File file = createFile(folder, lines);
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         ArgumentCaptor<GrammarAST> captor = ArgumentCaptor.forClass(GrammarAST.class);
         verify(check).visitToken(captor.capture(), any(TokenStream.class));
@@ -124,10 +117,7 @@ public class GrammarWalkerTest extends AGrammarWalkerTest
         File file = createFile(folder, lines);
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         ArgumentCaptor<GrammarAST> captor = ArgumentCaptor.forClass(GrammarAST.class);
         verify(check).visitToken(captor.capture(), any(TokenStream.class));
@@ -158,10 +148,7 @@ public class GrammarWalkerTest extends AGrammarWalkerTest
         File file = createFile(folder, lines);
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verifyVisitAndLeaveTokenNotCalled(check);
     }

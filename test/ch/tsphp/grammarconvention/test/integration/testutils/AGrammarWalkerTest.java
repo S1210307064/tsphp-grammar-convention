@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableMap;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 import org.antlr.runtime.TokenStream;
 import org.antlr.tool.GrammarAST;
 import org.junit.Ignore;
@@ -25,7 +26,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -131,5 +135,24 @@ public abstract class AGrammarWalkerTest
         } catch (MockitoAssertionError e) {
             //that's fine, should fail since verify failed
         }
+    }
+
+    protected void processAndCheckNoAdditionalErrorOccurred(
+            ModuleFactory moduleFactory, List<String> lines, File file, Configuration config, int numberOfErrors)
+            throws CheckstyleException {
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        TreeSet<LocalizedMessage> messages = walker.process(file, lines);
+        if (messages.size() != numberOfErrors) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (LocalizedMessage message : messages) {
+                stringBuilder.append(message.getLineNo()).append(": ").append(message.getMessage());
+            }
+            fail("more errors occurred than expected.\n"
+                            + "Expected is " + numberOfErrors + " but was " + messages.size() + ":\n" + stringBuilder
+            );
+        }
+        assertThat(messages.size(), is(numberOfErrors));
     }
 }

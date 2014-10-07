@@ -91,7 +91,7 @@ public class TokensOrderCheck extends AGrammarConventionCheck
 
     private void logWrongOrder(final String tokenName1, final String tokenName2, final GrammarAST lhs) {
         logIt(lhs.getLine(), "tokens are not in alphabetical order, spotted first occurrence. "
-                + tokenName1 + " and " + tokenName2 + "have to be switched at least "
+                + tokenName1 + " and " + tokenName2 + " have to be switched at least "
                 + "(maybe there are more errors).");
     }
 }

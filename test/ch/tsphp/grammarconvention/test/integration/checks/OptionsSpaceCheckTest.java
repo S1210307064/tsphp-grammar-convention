@@ -6,7 +6,6 @@
 
 package ch.tsphp.grammarconvention.test.integration.checks;
 
-import ch.tsphp.grammarconvention.GrammarWalker;
 import ch.tsphp.grammarconvention.checks.OptionsSpaceCheck;
 import ch.tsphp.grammarconvention.test.integration.testutils.AGrammarWalkerTest;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
@@ -38,10 +37,7 @@ public class OptionsSpaceCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(moduleName, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verifyVisitAndLeaveTokenNotCalled(check);
     }

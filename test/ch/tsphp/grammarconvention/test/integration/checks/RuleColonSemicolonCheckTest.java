@@ -6,7 +6,6 @@
 
 package ch.tsphp.grammarconvention.test.integration.checks;
 
-import ch.tsphp.grammarconvention.GrammarWalker;
 import ch.tsphp.grammarconvention.checks.RuleColonSemicolonCheck;
 import ch.tsphp.grammarconvention.test.integration.testutils.AGrammarWalkerTest;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
@@ -55,10 +54,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check, times(2)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -86,10 +82,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check, times(2)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -123,10 +116,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 3);
 
         verify(check, times(4)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -154,10 +144,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check, times(2)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -191,10 +178,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 3);
 
         verify(check, times(4)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -221,10 +205,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check, times(2)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -252,10 +233,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check, times(2)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -289,10 +267,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check, times(4)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -320,10 +295,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check, times(2)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -357,10 +329,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 3);
 
         verify(check, times(4)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -386,10 +355,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check, times(2)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -415,10 +381,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check, times(2)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -445,10 +408,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check, times(2)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -482,10 +442,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check, times(4)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);

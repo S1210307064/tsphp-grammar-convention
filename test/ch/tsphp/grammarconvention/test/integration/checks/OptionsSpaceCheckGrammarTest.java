@@ -6,7 +6,6 @@
 
 package ch.tsphp.grammarconvention.test.integration.checks;
 
-import ch.tsphp.grammarconvention.GrammarWalker;
 import ch.tsphp.grammarconvention.checks.OptionsSpaceCheck;
 import ch.tsphp.grammarconvention.test.integration.testutils.AGrammarWalkerTest;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
@@ -63,10 +62,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -94,10 +90,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(moduleName, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 4);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -123,10 +116,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -154,10 +144,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -184,10 +171,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -215,10 +199,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -245,10 +226,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -274,10 +252,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -305,10 +280,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 4);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -334,10 +306,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -364,10 +333,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -394,10 +360,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 1);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -425,10 +388,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -455,10 +415,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 2);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
@@ -485,10 +442,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -513,10 +467,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -542,10 +493,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -570,10 +518,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -598,10 +543,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -626,10 +568,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -654,10 +593,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
@@ -683,10 +619,7 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
 
         //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
         verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
