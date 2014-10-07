@@ -36,7 +36,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
     private static final String MODULE_NAME = "TokensSpaceCheck";
 
     @Test
-    public void processFiltered_WithoutOptions_CheckIsNeverCalled()
+    public void processFiltered_WithoutTokens_CheckIsNeverCalled()
             throws CheckstyleException, IOException {
         TokensSpaceCheck check = spy(createCheck());
 

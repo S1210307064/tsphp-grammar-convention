@@ -37,6 +37,29 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
     private static final String INDENT = "    ";
 
     @Test
+    public void processFiltered_WithoutTokens_CheckIsNeverCalled()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("rule: EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verifyVisitAndLeaveTokenNotCalled(check);
+    }
+
+    @Test
     public void processFiltered_NoIndentation_LogCalledForAppropriateLine()
             throws CheckstyleException, IOException {
         TokensIndentationCheck check = spy(createCheck());
@@ -466,6 +489,130 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         assertThat(captor.getAllValues(), contains(5, 7, 9, 11, 13, 15, 17));
     }
 
+
+    @Test
+    public void processFiltered_ImaginaryTokenNotIntended_LogCalledForAppropriateLine()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add("A;");
+        lines.add(INDENT + "B;");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(1)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(3));
+    }
+
+
+    @Test
+    public void processFiltered_ImaginaryTokenNotIntendedMultipleTimes_LogCalledForAppropriateLines()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add("A;");
+        lines.add(INDENT + "B;");
+        lines.add("C;");
+        lines.add("D;");
+        lines.add(INDENT + "E;");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(3)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(3, 5, 6));
+    }
+
+    @Test
+    public void processFiltered_ImaginaryTokenWrongIntended_LogCalledForAppropriateLine()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(" A;");
+        lines.add(INDENT + "B;");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(1)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(3));
+    }
+
+
+    @Test
+    public void processFiltered_ImaginaryTokenWrongIntendedMultipleTimes_LogCalledForAppropriateLines()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(" A;");
+        lines.add(INDENT + "B;");
+        lines.add("  C;");
+        lines.add("   D;");
+        lines.add(INDENT + "E;");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(3)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(3, 5, 6));
+    }
 
     @Test
     public void processFiltered_CorrectIndentation_LogItNotCalled()
