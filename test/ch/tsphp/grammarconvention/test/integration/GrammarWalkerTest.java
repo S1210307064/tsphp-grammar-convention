@@ -13,6 +13,7 @@ import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import org.antlr.grammar.v3.ANTLRParser;
+import org.antlr.runtime.TokenStream;
 import org.antlr.tool.GrammarAST;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -24,7 +25,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -95,7 +96,7 @@ public class GrammarWalkerTest extends AGrammarWalkerTest
         walker.process(file, lines);
 
         ArgumentCaptor<GrammarAST> captor = ArgumentCaptor.forClass(GrammarAST.class);
-        verify(check).visitToken(captor.capture());
+        verify(check).visitToken(captor.capture(), any(TokenStream.class));
         assertThat(captor.getAllValues().size(), is(1));
         assertThat(captor.getValue().getType(), is(ANTLRParser.OPTIONS));
         captor = ArgumentCaptor.forClass(GrammarAST.class);
@@ -129,7 +130,7 @@ public class GrammarWalkerTest extends AGrammarWalkerTest
         walker.process(file, lines);
 
         ArgumentCaptor<GrammarAST> captor = ArgumentCaptor.forClass(GrammarAST.class);
-        verify(check).visitToken(captor.capture());
+        verify(check).visitToken(captor.capture(), any(TokenStream.class));
         assertThat(captor.getAllValues().size(), is(1));
         assertThat(captor.getValue().getType(), is(ANTLRParser.OPTIONS));
         captor = ArgumentCaptor.forClass(GrammarAST.class);

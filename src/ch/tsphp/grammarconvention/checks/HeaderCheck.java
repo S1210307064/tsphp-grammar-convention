@@ -8,6 +8,7 @@ package ch.tsphp.grammarconvention.checks;
 
 import ch.tsphp.grammarconvention.AGrammarConventionCheck;
 import org.antlr.grammar.v3.ANTLRParser;
+import org.antlr.runtime.TokenStream;
 import org.antlr.tool.GrammarAST;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class HeaderCheck extends AGrammarConventionCheck
     }
 
     @Override
-    public void visitToken(final GrammarAST ast) {
+    public void visitToken(final GrammarAST ast, final TokenStream tokenStream) {
         if (isNotGrammarAction(ast)) {
             return;
         }

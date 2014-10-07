@@ -12,6 +12,7 @@ import ch.tsphp.grammarconvention.test.integration.testutils.AGrammarWalkerTest;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import org.antlr.runtime.TokenStream;
 import org.antlr.tool.GrammarAST;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -59,7 +60,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(1)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(4));
@@ -90,7 +91,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(3, 5));
@@ -119,7 +120,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(1)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(3));
@@ -150,7 +151,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(3)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(3, 4, 5));
@@ -181,7 +182,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(4, 5));
@@ -211,7 +212,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(1)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(4));
@@ -243,7 +244,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(5, 7));
@@ -276,7 +277,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(1)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(5));
@@ -320,7 +321,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(7)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(5, 7, 9, 11, 13, 15, 17));
@@ -350,7 +351,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(1)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(4));
@@ -382,7 +383,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(5, 7));
@@ -415,7 +416,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(1)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(5));
@@ -459,7 +460,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(7)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(5, 7, 9, 11, 13, 15, 17));
@@ -491,7 +492,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -524,7 +525,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -557,7 +558,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -594,7 +595,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 

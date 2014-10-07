@@ -7,6 +7,7 @@
 package ch.tsphp.grammarconvention;
 
 import com.puppycrawl.tools.checkstyle.api.Check;
+import org.antlr.runtime.TokenStream;
 import org.antlr.tool.GrammarAST;
 
 /**
@@ -37,9 +38,10 @@ public abstract class AGrammarConventionCheck extends Check
      * <p/>
      * Define in getDefaultTokens() which tokens you want to be notified of.
      *
-     * @param ast The ast of the corresponding token.
+     * @param ast         The ast of the corresponding token.
+     * @param tokenStream The tokenStream of the whole grammar file.
      */
-    public void visitToken(final GrammarAST ast) {
+    public void visitToken(final GrammarAST ast, final TokenStream tokenStream) {
         //override in sub-class if suitable
     }
 

@@ -8,6 +8,7 @@ package ch.tsphp.grammarconvention.checks;
 
 import ch.tsphp.grammarconvention.AGrammarConventionCheck;
 import org.antlr.grammar.v3.ANTLRParser;
+import org.antlr.runtime.TokenStream;
 import org.antlr.tool.GrammarAST;
 
 public class OptionsIndentationCheck extends AGrammarConventionCheck
@@ -21,25 +22,25 @@ public class OptionsIndentationCheck extends AGrammarConventionCheck
     }
 
     @Override
-    public void visitToken(final GrammarAST ast) {
+    public void visitToken(final GrammarAST ast, final TokenStream tokenStream) {
         final int count = ast.getChildCount();
         for (int i = 0; i < count; ++i) {
             final GrammarAST equalSign = (GrammarAST) ast.getChild(i);
             final GrammarAST lhs = (GrammarAST) equalSign.getChild(0);
             final GrammarAST rhs = (GrammarAST) equalSign.getChild(1);
             if (lhs.getToken().getCharPositionInLine() != NUMBER_OF_SPACES) {
-                logIt(lhs.getLine(), "should be intended by " + NUMBER_OF_SPACES
-                        + " spaces but was intended by " + lhs.getCharPositionInLine());
+                logIt(lhs.getLine(), "option pair should be intended by "
+                        + NUMBER_OF_SPACES + " spaces but was intended by " + lhs.getCharPositionInLine());
             }
             int equalSignPositionInLine = equalSign.getToken().getCharPositionInLine();
             if (!isOnSameLine(lhs, equalSign) && equalSignPositionInLine != NUMBER_OF_SPACES * 2) {
-                logIt(equalSign.getLine(), "should be intended by " + NUMBER_OF_SPACES * 2
-                        + " spaces but was intended by " + equalSignPositionInLine);
+                logIt(equalSign.getLine(), "= sign of an option pair should be intended by "
+                        + NUMBER_OF_SPACES * 2 + " spaces but was intended by " + equalSignPositionInLine);
             }
             int rhsPositionInLine = rhs.getToken().getCharPositionInLine();
             if (!isOnSameLine(equalSign, rhs) && rhsPositionInLine != NUMBER_OF_SPACES * 2) {
-                logIt(rhs.getLine(), "should be intended by " + NUMBER_OF_SPACES * 2
-                        + " spaces but was intended by " + rhsPositionInLine);
+                logIt(rhs.getLine(), "right hand side of an option pair should be intended by "
+                        + NUMBER_OF_SPACES * 2 + " spaces but was intended by " + rhsPositionInLine);
             }
         }
     }

@@ -12,6 +12,7 @@ import ch.tsphp.grammarconvention.test.integration.testutils.AGrammarWalkerTest;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import org.antlr.runtime.TokenStream;
 import org.antlr.tool.GrammarAST;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -33,6 +34,29 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
 {
 
     private static final String MODULE_NAME = "TokensSpaceCheck";
+
+    @Test
+    public void processFiltered_WithoutOptions_CheckIsNeverCalled()
+            throws CheckstyleException, IOException {
+        TokensSpaceCheck check = spy(createCheck());
+
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("rule: EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verifyVisitAndLeaveTokenNotCalled(check);
+    }
 
     @Test
     public void processFiltered_SpaceRequiredNoneThere_LogCalledForAppropriateLine()
@@ -58,7 +82,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(3, 3));
@@ -89,7 +113,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(4)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(3, 3, 4, 4));
@@ -118,7 +142,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(1)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(4));
@@ -149,7 +173,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(4, 6));
@@ -179,7 +203,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(1)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(5));
@@ -210,7 +234,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(3, 6));
@@ -240,7 +264,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(4, 5));
@@ -269,7 +293,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(3, 3));
@@ -300,7 +324,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(4)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(4, 4, 5, 5));
@@ -329,7 +353,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(1)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(4));
@@ -359,7 +383,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(3, 5));
@@ -389,7 +413,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(1)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(5));
@@ -420,7 +444,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(3, 4));
@@ -450,7 +474,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
         assertThat(captor.getAllValues(), contains(4, 5));
@@ -480,7 +504,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -508,7 +532,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -537,7 +561,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -565,7 +589,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -593,7 +617,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -622,7 +646,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.process(file, lines);
 
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -650,7 +674,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -679,7 +703,7 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 

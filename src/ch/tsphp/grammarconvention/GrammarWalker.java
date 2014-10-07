@@ -79,6 +79,7 @@ public class GrammarWalker extends AbstractFileSetCheck
     private ClassLoader classLoader;
     private ModuleFactory moduleFactory;
     private Context childContext;
+    private TokenStream tokenStream;
 
     public GrammarWalker() {
         setFileExtensions(new String[]{"g"});
@@ -187,7 +188,7 @@ public class GrammarWalker extends AbstractFileSetCheck
         String fileName = file.getName();
         ANTLRLexer lexer = new ANTLRLexer(new ANTLRReaderStream(new FileReader(file)));
         lexer.setFileName(fileName);
-        TokenStream tokenStream = new CommonTokenStream(lexer);
+        tokenStream = new CommonTokenStream(lexer);
         ANTLRParser parser = ANTLRParser.createParser(tokenStream);
         parser.setFileName(fileName);
         Grammar grammar = new Grammar(new Tool());
@@ -251,14 +252,14 @@ public class GrammarWalker extends AbstractFileSetCheck
 
     /**
      * Notify interested checks that visiting a node.
+     *  @param ast the node to notify for
      *
-     * @param ast the node to notify for
      */
     private void notifyVisit(final GrammarAST ast) {
         final Collection<AGrammarConventionCheck> visitors =
                 tokenToChecks.get(TokenTypes.getTokenName(ast.getType()));
         for (AGrammarConventionCheck check : visitors) {
-            check.visitToken(ast);
+            check.visitToken(ast, tokenStream);
         }
     }
 

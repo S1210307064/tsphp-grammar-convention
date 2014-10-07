@@ -11,6 +11,8 @@ import org.antlr.grammar.v3.ANTLRParser;
 public class TokensSpaceCheck extends OptionsSpaceCheck
 {
 
+    protected String type = "token";
+
     @Override
     public int[] getDefaultTokens() {
         return new int[]{ANTLRParser.TOKENS};

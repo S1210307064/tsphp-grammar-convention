@@ -12,6 +12,7 @@ import ch.tsphp.grammarconvention.test.integration.testutils.AGrammarWalkerTest;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import org.antlr.runtime.TokenStream;
 import org.antlr.tool.GrammarAST;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -283,7 +284,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check).logIt(captor.capture(), anyString());
         assertThat(captor.getValue(), is(2));
@@ -310,7 +311,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check).logIt(captor.capture(), anyString());
         assertThat(captor.getValue(), is(2));
@@ -337,7 +338,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check).logIt(captor.capture(), anyString());
         assertThat(captor.getValue(), is(2));
@@ -367,7 +368,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check).logIt(captor.capture(), anyString());
         assertThat(captor.getValue(), is(4));
@@ -397,7 +398,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check).logIt(captor.capture(), anyString());
         assertThat(captor.getValue(), is(4));
@@ -427,7 +428,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check).logIt(captor.capture(), anyString());
         assertThat(captor.getValue(), is(4));
@@ -458,7 +459,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -487,7 +488,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -516,7 +517,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -542,7 +543,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
@@ -567,7 +568,7 @@ public class HeaderCheckTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
-        verify(check).visitToken(any(GrammarAST.class));
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 

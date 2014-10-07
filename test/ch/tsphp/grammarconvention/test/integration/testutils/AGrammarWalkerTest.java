@@ -8,11 +8,11 @@ package ch.tsphp.grammarconvention.test.integration.testutils;
 
 import ch.tsphp.grammarconvention.AGrammarConventionCheck;
 import ch.tsphp.grammarconvention.GrammarWalker;
-import ch.tsphp.grammarconvention.checks.OptionsSpaceCheck;
 import com.google.common.collect.ImmutableMap;
 import com.puppycrawl.tools.checkstyle.ModuleFactory;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import org.antlr.runtime.TokenStream;
 import org.antlr.tool.GrammarAST;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -68,7 +69,7 @@ public abstract class AGrammarWalkerTest
     protected void verifyVisitAndLeaveTokenNotCalled(AGrammarConventionCheck check) {
         try {
             ArgumentCaptor<GrammarAST> captor = ArgumentCaptor.forClass(GrammarAST.class);
-            verify(check).visitToken(captor.capture());
+            verify(check).visitToken(captor.capture(), any(TokenStream.class));
             fail("visitToken was called " + captor.getAllValues().size() + " time(s)");
         } catch (MockitoAssertionError e) {
             //should get exception since visitToken should not have been called
@@ -91,7 +92,8 @@ public abstract class AGrammarWalkerTest
     }
 
 
-    protected Configuration createChildConfiguration(String childCheckName, String[][] attributes) throws CheckstyleException {
+    protected Configuration createChildConfiguration(String childCheckName,
+            String[][] attributes) throws CheckstyleException {
         Configuration childConfig = mock(Configuration.class);
         when(childConfig.getName()).thenReturn(childCheckName);
         final int length = attributes.length;
@@ -115,7 +117,8 @@ public abstract class AGrammarWalkerTest
         return FileHelper.createFile(folder, fileName, lines);
     }
 
-    protected ModuleFactory createModuleFactory(String moduleName, AGrammarConventionCheck check) throws CheckstyleException {
+    protected ModuleFactory createModuleFactory(String moduleName, AGrammarConventionCheck check) throws
+            CheckstyleException {
         ModuleFactory moduleFactory = mock(ModuleFactory.class);
         when(moduleFactory.createModule(eq(moduleName))).thenReturn(check);
         return moduleFactory;
@@ -125,7 +128,7 @@ public abstract class AGrammarWalkerTest
         try {
             verify(check).logIt(anyInt(), anyString());
             fail("logIt was called even though it was not expected");
-        }catch(MockitoAssertionError e){
+        } catch (MockitoAssertionError e) {
             //that's fine, should fail since verify failed
         }
     }
