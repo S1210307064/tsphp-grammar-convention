@@ -14,7 +14,7 @@ public class OptionsSpaceCheck extends AGrammarConventionCheck
 {
     private boolean withSpacesAroundEqual = true;
 
-    public void setWithSpacesAroundEqual(boolean withSpaces) {
+    public void setWithSpacesAroundEqual(final boolean withSpaces) {
         withSpacesAroundEqual = withSpaces;
     }
 
@@ -54,7 +54,7 @@ public class OptionsSpaceCheck extends AGrammarConventionCheck
         }
     }
 
-    private boolean isSpaceBetween(GrammarAST left, GrammarAST right) {
+    private boolean isSpaceBetween(final GrammarAST left, final GrammarAST right) {
         return left.getCharPositionInLine() + left.getText().length() + 1 <= right.getCharPositionInLine();
     }
 }

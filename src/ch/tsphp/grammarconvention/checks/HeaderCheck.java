@@ -21,7 +21,7 @@ public class HeaderCheck extends AGrammarConventionCheck
     private String headerFile;
     private List<String> licenceNotice;
 
-    public void setHeaderFile(String headerFilePath) {
+    public void setHeaderFile(final String headerFilePath) {
         headerFile = headerFilePath;
     }
 

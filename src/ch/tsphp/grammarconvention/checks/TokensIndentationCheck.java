@@ -4,17 +4,16 @@
  * root folder or visit the project's website http://tsphp.ch/wiki/display/TSPHP/License
  */
 
-package ch.tsphp.grammarconvention.test.integration.checks;
+package ch.tsphp.grammarconvention.checks;
 
-public class OptionsSpaceCheckRuleTest extends OptionsSpaceCheckGrammarTest
+import org.antlr.grammar.v3.ANTLRParser;
+
+public class TokensIndentationCheck extends OptionsIndentationCheck
 {
-    @Override
-    public String getOptionsLine() {
-        return "rule options{";
-    }
 
     @Override
-    public String getRuleLine() {
-        return ": EOF;";
+    public int[] getDefaultTokens() {
+        return new int[]{ANTLRParser.TOKENS};
     }
+
 }

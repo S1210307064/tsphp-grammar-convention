@@ -27,17 +27,19 @@ public class OptionsIndentationCheck extends AGrammarConventionCheck
             final GrammarAST equalSign = (GrammarAST) ast.getChild(i);
             final GrammarAST lhs = (GrammarAST) equalSign.getChild(0);
             final GrammarAST rhs = (GrammarAST) equalSign.getChild(1);
-            if (lhs.getCharPositionInLine() != NUMBER_OF_SPACES) {
-                logIt(lhs.getLine(), "should be intended by " + NUMBER_OF_SPACES + " spaces but was intended by "
-                        + lhs.getCharPositionInLine());
+            if (lhs.getToken().getCharPositionInLine() != NUMBER_OF_SPACES) {
+                logIt(lhs.getLine(), "should be intended by " + NUMBER_OF_SPACES
+                        + " spaces but was intended by " + lhs.getCharPositionInLine());
             }
-            if (!isOnSameLine(lhs, equalSign) && equalSign.getCharPositionInLine() != NUMBER_OF_SPACES) {
-                logIt(lhs.getLine(), "should be intended by " + NUMBER_OF_SPACES + " spaces but was intended by "
-                        + lhs.getCharPositionInLine());
+            int equalSignPositionInLine = equalSign.getToken().getCharPositionInLine();
+            if (!isOnSameLine(lhs, equalSign) && equalSignPositionInLine != NUMBER_OF_SPACES * 2) {
+                logIt(equalSign.getLine(), "should be intended by " + NUMBER_OF_SPACES * 2
+                        + " spaces but was intended by " + equalSignPositionInLine);
             }
-            if (!isOnSameLine(equalSign, rhs) && rhs.getCharPositionInLine() != NUMBER_OF_SPACES) {
-                logIt(lhs.getLine(), "should be intended by " + NUMBER_OF_SPACES + " spaces but was intended by "
-                        + lhs.getCharPositionInLine());
+            int rhsPositionInLine = rhs.getToken().getCharPositionInLine();
+            if (!isOnSameLine(equalSign, rhs) && rhsPositionInLine != NUMBER_OF_SPACES * 2) {
+                logIt(rhs.getLine(), "should be intended by " + NUMBER_OF_SPACES * 2
+                        + " spaces but was intended by " + rhsPositionInLine);
             }
         }
     }

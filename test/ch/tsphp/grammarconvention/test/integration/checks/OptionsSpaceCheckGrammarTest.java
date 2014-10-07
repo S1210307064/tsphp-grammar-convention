@@ -34,6 +34,15 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
     private static final String MODULE_NAME = "OptionsSpaceCheck";
 
+    protected String getOptionsLine() {
+        return "options{";
+    }
+
+    protected String getRuleLine() {
+        return "rule : EOF;";
+    }
+
+
     @Test
     public void processFiltered_SpaceRequiredNoneThere_LogCalledForAppropriateLine()
             throws CheckstyleException, IOException {
@@ -43,11 +52,11 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add("language = Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
@@ -73,12 +82,12 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add("language=Java;");
         lines.add("language = Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(moduleName, getWithSpaceAttribute("true"));
@@ -103,11 +112,11 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language = Java;");
         lines.add("language= Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
@@ -132,13 +141,13 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language = Java;");
         lines.add("language= Java;");
         lines.add("language = Java;");
         lines.add("language= Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
@@ -163,12 +172,12 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language = Java;");
         lines.add("language = Java;");
         lines.add("language =Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
@@ -193,13 +202,13 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language =Java;");
         lines.add("language = Java;");
         lines.add("language = Java;");
         lines.add("language =Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
@@ -224,12 +233,12 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language = Java;");
         lines.add("language= Java;");
         lines.add("language =Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
@@ -254,11 +263,11 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language = Java;");
         lines.add("language=Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
@@ -283,13 +292,13 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add("language = Java;");
         lines.add("language = Java;");
         lines.add("language=Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration("OptionsSpaceCheck", getWithSpaceAttribute("false"));
@@ -314,11 +323,11 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add("language =Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
@@ -343,12 +352,12 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language =Java;");
         lines.add("language=Java;");
         lines.add("language =Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
@@ -373,12 +382,12 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add("language=Java;");
         lines.add("language= Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
@@ -403,13 +412,13 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language= Java;");
         lines.add("language= Java;");
         lines.add("language=Java;");
         lines.add("language=Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
@@ -434,12 +443,12 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add("language =Java;");
         lines.add("language= Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
@@ -457,19 +466,19 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
     }
 
     @Test
-    public void processFiltered_SpaceRequiredRightNotOnSameLine_LogNotCalled()
+    public void processFiltered_SpaceRequiredRightNotOnSameLine_LogItNotCalled()
             throws CheckstyleException, IOException {
         OptionsSpaceCheck check = spy(createCheck());
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language = Java;");
         lines.add("language =");
         lines.add("Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
@@ -484,19 +493,19 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
     }
 
     @Test
-    public void processFiltered_SpaceRequiredLeftNotOnSameLine_LogNotCalled()
+    public void processFiltered_SpaceRequiredLeftNotOnSameLine_LogItNotCalled()
             throws CheckstyleException, IOException {
         OptionsSpaceCheck check = spy(createCheck());
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language = Java;");
         lines.add("language");
         lines.add("= Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
@@ -511,20 +520,20 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
     }
 
     @Test
-    public void processFiltered_SpaceRequiredBothNotOnSameLine_LogNotCalled()
+    public void processFiltered_SpaceRequiredBothNotOnSameLine_LogItNotCalled()
             throws CheckstyleException, IOException {
         OptionsSpaceCheck check = spy(createCheck());
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language = Java;");
         lines.add("language");
         lines.add("=");
         lines.add("Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
@@ -539,19 +548,19 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
     }
 
     @Test
-    public void processFiltered_SpaceNotRequiredRightNotOnSameLine_LogNotCalled()
+    public void processFiltered_SpaceNotRequiredRightNotOnSameLine_LogItNotCalled()
             throws CheckstyleException, IOException {
         OptionsSpaceCheck check = spy(createCheck());
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add("language=");
         lines.add("Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
@@ -566,19 +575,19 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
     }
 
     @Test
-    public void processFiltered_SpaceNotRequiredLeftNotOnSameLine_LogNotCalled()
+    public void processFiltered_SpaceNotRequiredLeftNotOnSameLine_LogItNotCalled()
             throws CheckstyleException, IOException {
         OptionsSpaceCheck check = spy(createCheck());
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add("language");
         lines.add("=Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
@@ -593,19 +602,19 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
     }
 
     @Test
-    public void processFiltered_SpaceRequiredAndSpacesGiven_LogNotCalled()
+    public void processFiltered_SpaceRequiredAndSpacesGiven_LogItNotCalled()
             throws CheckstyleException, IOException {
         OptionsSpaceCheck check = spy(createCheck());
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language = Java;");
         lines.add("language = Java;");
         lines.add("language = Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("true"));
@@ -620,19 +629,19 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
     }
 
     @Test
-    public void processFiltered_SpaceNotRequiredNoneGiven_LogNotCalled()
+    public void processFiltered_SpaceNotRequiredNoneGiven_LogItNotCalled()
             throws CheckstyleException, IOException {
         OptionsSpaceCheck check = spy(createCheck());
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add("language=Java;");
         lines.add("language=Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
@@ -647,20 +656,20 @@ public class OptionsSpaceCheckGrammarTest extends AGrammarWalkerTest
     }
 
     @Test
-    public void processFiltered_SpaceNotRequiredBothNotOnSameLine_LogNotCalled()
+    public void processFiltered_SpaceNotRequiredBothNotOnSameLine_LogItNotCalled()
             throws CheckstyleException, IOException {
         OptionsSpaceCheck check = spy(createCheck());
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
         lines.add("grammar test;");
-        lines.add("options{");
+        lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add("language");
         lines.add("=");
         lines.add("Java;");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add(getRuleLine());
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
