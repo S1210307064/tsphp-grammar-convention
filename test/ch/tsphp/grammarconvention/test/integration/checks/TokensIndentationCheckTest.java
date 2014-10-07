@@ -599,6 +599,35 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         verifyLogItNotCalled(check);
     }
 
+    @Test
+    public void processFiltered_ImaginaryTokenCorrectIndentation_LogItNotCalled()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "BLOCK;");
+        lines.add(INDENT + "BLOCK;");
+        lines.add(INDENT + "BLOCK;");
+        lines.add(INDENT + "BLOCK;");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        verifyLogItNotCalled(check);
+    }
+
     protected TokensIndentationCheck createCheck() {
         return new TokensIndentationCheck();
     }

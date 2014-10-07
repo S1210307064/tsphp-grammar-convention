@@ -14,7 +14,6 @@ import org.antlr.tool.GrammarAST;
 public class OptionsSpaceCheck extends AGrammarConventionCheck
 {
     private boolean withSpacesAroundEqual = true;
-    protected String type = "option";
 
     public void setWithSpacesAroundEqual(final boolean withSpaces) {
         withSpacesAroundEqual = withSpaces;
@@ -23,7 +22,6 @@ public class OptionsSpaceCheck extends AGrammarConventionCheck
     public boolean needsSpacesAroundEqual() {
         return withSpacesAroundEqual;
     }
-
 
     @Override
     public int[] getDefaultTokens() {
@@ -41,17 +39,17 @@ public class OptionsSpaceCheck extends AGrammarConventionCheck
             if (isOnSameLine(equalSign, lhs)) {
                 boolean hasSpaceBeforeEqual = isSpaceBetween(lhs, equalSign);
                 if (withSpacesAroundEqual && !hasSpaceBeforeEqual) {
-                    logIt(equalSign.getLine(), type + " pair needs spaces around = and there was no space before =");
+                    logIt(equalSign.getLine(), "option pair needs spaces around = and there was no space before =");
                 } else if (!withSpacesAroundEqual && hasSpaceBeforeEqual) {
-                    logIt(equalSign.getLine(), type + " pair should not have spaces around = and space found before =");
+                    logIt(equalSign.getLine(), "option pair should not have spaces around = and space found before =");
                 }
             }
             if (isOnSameLine(equalSign, rhs)) {
                 boolean hasSpaceAfterEqual = isSpaceBetween(equalSign, rhs);
                 if (withSpacesAroundEqual && !hasSpaceAfterEqual) {
-                    logIt(equalSign.getLine(), type + " pair needs spaces around = and there was no space after =");
+                    logIt(equalSign.getLine(), "option pair needs spaces around = and there was no space after =");
                 } else if (!withSpacesAroundEqual && hasSpaceAfterEqual) {
-                    logIt(equalSign.getLine(), type + " pair should not have spaces around = and space found after =");
+                    logIt(equalSign.getLine(), "option pair should not have spaces around = and space found after =");
                 }
             }
         }

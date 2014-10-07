@@ -707,6 +707,37 @@ public class TokensSpaceCheckTest extends AGrammarWalkerTest
         verifyLogItNotCalled(check);
     }
 
+    @Test
+    public void processFiltered_OnlyImaginaryTokens_LogItNotCalled()
+            throws CheckstyleException, IOException {
+        TokensSpaceCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add("BLOCK;");
+        lines.add("BLOCK;");
+        lines.add("BLOCK;");
+        lines.add("BLOCK;");
+        lines.add("BLOCK;");
+        lines.add("BLOCK;");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, getWithSpaceAttribute("false"));
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        verifyLogItNotCalled(check);
+    }
+
     private String[][] getWithSpaceAttribute(String value) {
         return new String[][]{{"withSpacesAroundEqual", value}};
     }
