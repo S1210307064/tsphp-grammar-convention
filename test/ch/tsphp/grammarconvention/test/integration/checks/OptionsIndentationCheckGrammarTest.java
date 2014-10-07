@@ -499,6 +499,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
+        verify(check).visitToken(any(GrammarAST.class));
         verifyLogItNotCalled(check);
     }
 
@@ -531,6 +532,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
+        verify(check).visitToken(any(GrammarAST.class));
         verifyLogItNotCalled(check);
     }
 
@@ -563,6 +565,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
+        verify(check).visitToken(any(GrammarAST.class));
         verifyLogItNotCalled(check);
     }
 
@@ -599,6 +602,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         walker.setupChild(config);
         walker.process(file, lines);
 
+        verify(check).visitToken(any(GrammarAST.class));
         verifyLogItNotCalled(check);
     }
 

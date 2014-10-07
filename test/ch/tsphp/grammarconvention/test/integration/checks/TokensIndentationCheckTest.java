@@ -31,30 +31,9 @@ import static org.mockito.Mockito.verify;
 
 public class TokensIndentationCheckTest extends AGrammarWalkerTest
 {
+
     private static final String MODULE_NAME = "TokensIndentationCheck";
     private static final String INDENT = "    ";
-
-    @Test
-    public void processFiltered_WithoutOptions_CheckIsNeverCalled()
-            throws CheckstyleException, IOException {
-        TokensIndentationCheck check = spy(createCheck());
-        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
-
-        List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
-        lines.add("rule: EOF;");
-        File file = createFile("test.g", lines);
-
-        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
-
-        //act
-        GrammarWalker walker = createGrammarWalker(moduleFactory);
-        walker.finishLocalSetup();
-        walker.setupChild(config);
-        walker.process(file, lines);
-
-        verifyVisitAndLeaveTokenNotCalled(check);
-    }
 
     @Test
     public void processFiltered_NoIndentation_LogCalledForAppropriateLine()
@@ -69,7 +48,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         lines.add(INDENT + "Plus='+';");
         lines.add("Plus = '+';");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add("rule : EOF;");
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
@@ -100,7 +79,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         lines.add(INDENT + "Plus='+';");
         lines.add("Plus = '+';");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add("rule : EOF;");
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(moduleName, new String[][]{});
@@ -129,7 +108,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         lines.add("  Plus='+';");
         lines.add(INDENT + "Plus= '+';");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add("rule : EOF;");
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
@@ -160,7 +139,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         lines.add("   Plus = '+';");
         lines.add("    Plus= '+';");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add("rule : EOF;");
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
@@ -191,7 +170,7 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         lines.add("  Plus= '+';");
         lines.add(INDENT + "Plus ='+';");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add("rule : EOF;");
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
@@ -209,7 +188,37 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
     }
 
     @Test
-    public void processFiltered_CorrectIndentation_LogCalledForAppropriateLines()
+    public void processFiltered_EqualOnNewLineWithoutIndentation_LogCalledForAppropriateLines()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus");
+        lines.add("= '+';");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(1)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(4));
+    }
+
+    @Test
+    public void processFiltered_EqualOnNewLineWithoutIndentationMultipleTimes_LogCalledForAppropriateLines()
             throws CheckstyleException, IOException {
         TokensIndentationCheck check = spy(createCheck());
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
@@ -218,11 +227,12 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         lines.add("grammar test;");
         lines.add("tokens{");
         lines.add(INDENT + "Plus ='+';");
-        lines.add("Plus = '+';");
-        lines.add("  Plus= '+';");
-        lines.add(INDENT + "Plus ='+';");
+        lines.add(INDENT + "Plus");
+        lines.add("= '+';");
+        lines.add(INDENT + "Plus");
+        lines.add("= '+';");
         lines.add("}");
-        lines.add("rule: EOF;");
+        lines.add("rule : EOF;");
         File file = createFile("test.g", lines);
 
         Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
@@ -236,7 +246,356 @@ public class TokensIndentationCheckTest extends AGrammarWalkerTest
         verify(check).visitToken(any(GrammarAST.class));
         ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         verify(check, times(2)).logIt(captor.capture(), anyString());
-        assertThat(captor.getAllValues(), contains(4, 5));
+        assertThat(captor.getAllValues(), contains(5, 7));
+    }
+
+    @Test
+    public void processFiltered_EqualOnNewLineWrongIndentation_LogCalledForAppropriateLines()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add(INDENT + "Plus");
+        //would need two INDENT
+        lines.add(INDENT + "= '+';");
+        lines.add(INDENT + "Plus");
+        lines.add(INDENT + INDENT + "= '+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(1)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(5));
+    }
+
+    @Test
+    public void processFiltered_EqualOnNewLineWrongIndentationMultipleTimes_LogCalledForAppropriateLines()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add(INDENT + "Plus");
+        lines.add(" = '+';");
+        lines.add(INDENT + "Plus");
+        lines.add("  = '+';");
+        lines.add(INDENT + "Plus");
+        lines.add("   = '+';");
+        lines.add(INDENT + "Plus");
+        lines.add("    = '+';");
+        lines.add(INDENT + "Plus");
+        lines.add("     = '+';");
+        lines.add(INDENT + "Plus");
+        lines.add("      = '+';");
+        lines.add(INDENT + "Plus");
+        lines.add("       = '+';");
+        lines.add(INDENT + "Plus");
+        lines.add(INDENT + INDENT + "= '+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(7)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(5, 7, 9, 11, 13, 15, 17));
+    }
+
+    @Test
+    public void processFiltered_RhsOnNewLineWithoutIndentation_LogCalledForAppropriateLines()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus=");
+        lines.add("'+';");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(1)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(4));
+    }
+
+    @Test
+    public void processFiltered_RhsOnNewLineWithoutIndentationMultipleTimes_LogCalledForAppropriateLines()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add(INDENT + "Plus =");
+        lines.add("'+';");
+        lines.add(INDENT + "Plus= ");
+        lines.add("'+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(2)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(5, 7));
+    }
+
+    @Test
+    public void processFiltered_RhsOnNewLineWrongIndentation_LogCalledForAppropriateLines()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add(INDENT + "Plus=");
+        //would need two INDENT
+        lines.add(INDENT + "'+';");
+        lines.add(INDENT + "Plus=");
+        lines.add(INDENT + INDENT + "'+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(1)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(5));
+    }
+
+    @Test
+    public void processFiltered_RhsOnNewLineWrongIndentationMultipleTimes_LogCalledForAppropriateLines()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add(INDENT + "Plus=");
+        lines.add(" '+';");
+        lines.add(INDENT + "Plus=");
+        lines.add("  '+';");
+        lines.add(INDENT + "Plus=");
+        lines.add("   '+';");
+        lines.add(INDENT + "Plus= ");
+        lines.add("    '+';");
+        lines.add(INDENT + "Plus =");
+        lines.add("     '+';");
+        lines.add(INDENT + "Plus =");
+        lines.add("      '+';");
+        lines.add(INDENT + "Plus = ");
+        lines.add("       '+';");
+        lines.add(INDENT + "Plus=");
+        lines.add(INDENT + INDENT + "'+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        verify(check, times(7)).logIt(captor.capture(), anyString());
+        assertThat(captor.getAllValues(), contains(5, 7, 9, 11, 13, 15, 17));
+    }
+
+
+    @Test
+    public void processFiltered_CorrectIndentation_LogItNotCalled()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add(INDENT + "Plus ='+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        verifyLogItNotCalled(check);
+    }
+
+    @Test
+    public void processFiltered_EqualOnNewLineCorrectIndentation_LogItNotCalled()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus");
+        lines.add(INDENT + INDENT + "='+';");
+        lines.add(INDENT + "Plus");
+        lines.add(INDENT + INDENT + "='+';");
+        lines.add(INDENT + "Plus");
+        lines.add(INDENT + INDENT + "='+';");
+        lines.add(INDENT + "Plus");
+        lines.add(INDENT + INDENT + "= '+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        verifyLogItNotCalled(check);
+    }
+
+    @Test
+    public void processFiltered_RhsOnNewLineCorrectIndentation_LogItNotCalled()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus =");
+        lines.add(INDENT + INDENT + "'+';");
+        lines.add(INDENT + "Plus=");
+        lines.add(INDENT + INDENT + "'+';");
+        lines.add(INDENT + "Plus=");
+        lines.add(INDENT + INDENT + "'+';");
+        lines.add(INDENT + "Plus =");
+        lines.add(INDENT + INDENT + "'+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        verifyLogItNotCalled(check);
+    }
+
+    @Test
+    public void processFiltered_EqualSignAndRhsOnNewLineCorrectIndentation_LogItNotCalled()
+            throws CheckstyleException, IOException {
+        TokensIndentationCheck check = spy(createCheck());
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("tokens{");
+        lines.add(INDENT + "Plus");
+        lines.add(INDENT + INDENT + "= ");
+        lines.add(INDENT + INDENT + "'+';");
+        lines.add(INDENT + "Plus");
+        lines.add(INDENT + INDENT + "=");
+        lines.add(INDENT + INDENT + "'+';");
+        lines.add(INDENT + "Plus");
+        lines.add(INDENT + INDENT + "= ");
+        lines.add(INDENT + INDENT + "'+';");
+        lines.add(INDENT + "Plus");
+        lines.add(INDENT + INDENT + "=");
+        lines.add(INDENT + INDENT + "'+';");
+        lines.add("}");
+        lines.add("rule : EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        GrammarWalker walker = createGrammarWalker(moduleFactory);
+        walker.finishLocalSetup();
+        walker.setupChild(config);
+        walker.process(file, lines);
+
+        verify(check).visitToken(any(GrammarAST.class));
+        verifyLogItNotCalled(check);
     }
 
     protected TokensIndentationCheck createCheck() {
