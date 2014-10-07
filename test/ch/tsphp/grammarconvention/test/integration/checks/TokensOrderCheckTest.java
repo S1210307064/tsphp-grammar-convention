@@ -234,6 +234,7 @@ public class TokensOrderCheckTest extends AGrammarWalkerTest
         lines.add("A = 'a';");
         lines.add("B = 'b';");
         lines.add("A;");
+        lines.add("D = 'd';");
         lines.add("}");
         lines.add("rule : EOF;");
         File file = createFile("test.g", lines);
@@ -264,6 +265,9 @@ public class TokensOrderCheckTest extends AGrammarWalkerTest
         lines.add("A = 'a';");
         lines.add("B = 'b';");
         lines.add("C = 'c';");
+        lines.add("A;");
+        lines.add("D;");
+        lines.add("E;");
         lines.add("}");
         lines.add("rule : EOF;");
         File file = createFile("test.g", lines);

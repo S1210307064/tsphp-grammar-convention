@@ -32,33 +32,35 @@ public class TokensSpaceCheck extends OptionsSpaceCheck
     public void visitToken(final GrammarAST ast, final TokenStream tokenStream) {
         final int count = ast.getChildCount();
         for (int i = 0; i < count; ++i) {
-
             final GrammarAST equalSign = (GrammarAST) ast.getChild(i);
-
             //check only necessary for imaginary tokens
             if (equalSign.getChildCount() == 2) {
-                final GrammarAST lhs = (GrammarAST) equalSign.getChild(0);
-                final GrammarAST rhs = (GrammarAST) equalSign.getChild(1);
+                check(equalSign);
+            }
+        }
+    }
 
-                if (isOnSameLine(equalSign, lhs)) {
-                    boolean hasSpaceBeforeEqual = isSpaceBetween(lhs, equalSign);
-                    if (withSpacesAroundEqual && !hasSpaceBeforeEqual) {
-                        logIt(equalSign.getLine(), "token pair needs spaces around = and there was no space before =");
-                    } else if (!withSpacesAroundEqual && hasSpaceBeforeEqual) {
-                        logIt(equalSign.getLine(), "token pair should not have spaces around = "
-                                + "and space found before =");
+    private void check(GrammarAST equalSign) {
+        final GrammarAST lhs = (GrammarAST) equalSign.getChild(0);
+        final GrammarAST rhs = (GrammarAST) equalSign.getChild(1);
 
-                    }
-                }
-                if (isOnSameLine(equalSign, rhs)) {
-                    boolean hasSpaceAfterEqual = isSpaceBetween(equalSign, rhs);
-                    if (withSpacesAroundEqual && !hasSpaceAfterEqual) {
-                        logIt(equalSign.getLine(), "token pair needs spaces around = and there was no space after =");
-                    } else if (!withSpacesAroundEqual && hasSpaceAfterEqual) {
-                        logIt(equalSign.getLine(), "token pair should not have spaces around = "
-                                + "and space found after =");
-                    }
-                }
+        if (isOnSameLine(equalSign, lhs)) {
+            boolean hasSpaceBeforeEqual = isSpaceBetween(lhs, equalSign);
+            if (withSpacesAroundEqual && !hasSpaceBeforeEqual) {
+                logIt(equalSign.getLine(), "token pair needs spaces around = and there was no space before =");
+            } else if (!withSpacesAroundEqual && hasSpaceBeforeEqual) {
+                logIt(equalSign.getLine(), "token pair should not have spaces around = "
+                        + "and space found before =");
+
+            }
+        }
+        if (isOnSameLine(equalSign, rhs)) {
+            boolean hasSpaceAfterEqual = isSpaceBetween(equalSign, rhs);
+            if (withSpacesAroundEqual && !hasSpaceAfterEqual) {
+                logIt(equalSign.getLine(), "token pair needs spaces around = and there was no space after =");
+            } else if (!withSpacesAroundEqual && hasSpaceAfterEqual) {
+                logIt(equalSign.getLine(), "token pair should not have spaces around = "
+                        + "and space found after =");
             }
         }
     }

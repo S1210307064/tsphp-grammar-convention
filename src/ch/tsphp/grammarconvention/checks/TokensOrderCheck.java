@@ -15,6 +15,10 @@ public class TokensOrderCheck extends AGrammarConventionCheck
 {
 
     protected String type = "token";
+    private boolean isImaginary;
+    private boolean haveNotReportedMixed;
+    private boolean haveNotReportedOrderImaginary;
+    private boolean haveNotReportedOrderNonImaginary;
 
     @Override
     public int[] getDefaultTokens() {
@@ -30,62 +34,62 @@ public class TokensOrderCheck extends AGrammarConventionCheck
         }
     }
 
-    private void check(GrammarAST tokensAst) {
+    private void check(final GrammarAST tokensAst) {
+        isImaginary = false;
+        haveNotReportedMixed = true;
+        haveNotReportedOrderImaginary = true;
+        haveNotReportedOrderNonImaginary = true;
 
-        boolean isImaginary = false;
-        boolean haveNotReportedMixed = true;
-        boolean haveNotReportedOrderImaginary = true;
-        boolean haveNotReportedOrderNonImaginary = true;
-
-        String tokenName1;
-        String tokenName2;
-
+        String tokenName;
         GrammarAST ast = (GrammarAST) tokensAst.getChild(0);
         if (ast.getChildCount() == 2) {
-            tokenName2 = ast.getChild(0).getText();
+            tokenName = ast.getChild(0).getText();
         } else {
-            tokenName2 = ast.getText();
+            tokenName = ast.getText();
             isImaginary = true;
         }
 
         final int count = tokensAst.getChildCount();
-        for (int i = 0; i < count; ++i) {
+        for (int i = 1; i < count; ++i) {
             final GrammarAST equalSign = (GrammarAST) tokensAst.getChild(i);
             if (equalSign.getChildCount() == 2) {
-                final GrammarAST lhs = (GrammarAST) equalSign.getChild(0);
-                tokenName1 = tokenName2;
-                tokenName2 = lhs.getText();
-                if (isImaginary) {
-                    isImaginary = false;
-                    if (haveNotReportedMixed) {
-                        haveNotReportedMixed = false;
-                        logIt(lhs.getLine(), "imaginary tokens and non-imaginary tokens should not be mixed,"
-                                + " whereas non-imaginary tokens should be first followed by the imaginary ones.");
-                    }
-                    continue;
-                }
-                if (haveNotReportedOrderNonImaginary && tokenName2.compareTo(tokenName1) < 0) {
-                    haveNotReportedOrderNonImaginary = false;
-                    logWrongOrder(tokenName1, tokenName2, lhs);
-                }
+                tokenName = checkTokenPair(tokenName, equalSign);
 
             } else {
-                tokenName1 = tokenName2;
-                tokenName2 = equalSign.getText();
-                if (!isImaginary) {
-                    isImaginary = true;
-                    continue;
-                }
-                isImaginary = true;
-                if (haveNotReportedOrderImaginary && tokenName2.compareTo(tokenName1) < 0) {
-                    haveNotReportedOrderImaginary = false;
-                    logWrongOrder(tokenName1, tokenName2, equalSign);
-                }
+                tokenName = checkImaginaryToken(tokenName, equalSign);
             }
         }
     }
 
-    private void logWrongOrder(String tokenName1, String tokenName2, GrammarAST lhs) {
+    private String checkImaginaryToken(final String tokenName1, final GrammarAST equalSign) {
+        String tokenName2 = equalSign.getText();
+        if (!isImaginary) {
+            isImaginary = true;
+        } else if (haveNotReportedOrderImaginary && tokenName2.compareTo(tokenName1) < 0) {
+            haveNotReportedOrderImaginary = false;
+            logWrongOrder(tokenName1, tokenName2, equalSign);
+        }
+        return tokenName2;
+    }
+
+    private String checkTokenPair(final String tokenName1, final GrammarAST equalSign) {
+        final GrammarAST lhs = (GrammarAST) equalSign.getChild(0);
+        String tokenName2 = lhs.getText();
+        if (isImaginary) {
+            isImaginary = false;
+            if (haveNotReportedMixed) {
+                haveNotReportedMixed = false;
+                logIt(lhs.getLine(), "imaginary tokens and non-imaginary tokens should not be mixed,"
+                        + " whereas non-imaginary tokens should be first followed by the imaginary ones.");
+            }
+        } else if (haveNotReportedOrderNonImaginary && tokenName2.compareTo(tokenName1) < 0) {
+            haveNotReportedOrderNonImaginary = false;
+            logWrongOrder(tokenName1, tokenName2, lhs);
+        }
+        return tokenName2;
+    }
+
+    private void logWrongOrder(final String tokenName1, final String tokenName2, final GrammarAST lhs) {
         logIt(lhs.getLine(), "tokens are not in alphabetical order, spotted first occurrence. "
                 + tokenName1 + " and " + tokenName2 + "have to be switched at least "
                 + "(maybe there are more errors).");
