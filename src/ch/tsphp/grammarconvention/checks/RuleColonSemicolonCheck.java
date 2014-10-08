@@ -53,9 +53,9 @@ public class RuleColonSemicolonCheck extends AGrammarConventionCheck
 
     private GrammarAST getColonAst(GrammarAST ruleAst) {
         GrammarAST alternatives = (GrammarAST) ruleAst.getChild(ruleAst.getChildCount() - 2);
-        // catch block is optional, if it is there then the alternatives are located at -3
+        // catch block is optional, if it is there then alternatives are one before
         if (alternatives.getType() == ANTLRParser.CATCH) {
-            alternatives = (GrammarAST) ruleAst.getChild(ruleAst.getChildCount() - 3);
+            alternatives = (GrammarAST) ruleAst.getChild(alternatives.getChildIndex() - 1);
         }
 
         // since the alternatives use an imaginary token BLOCK as root, which in turn is is built by the token before

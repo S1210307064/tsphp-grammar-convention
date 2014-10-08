@@ -169,8 +169,12 @@ Following adoptions are applied to the original file from checkstyle:
             <property name="severity" value="warning"/>
         </module>
         <module name="InnerAssignment"/>
-        <module name="MagicNumber"/>
-        <module name="MissingSwitchDefault"/>
+        <module name="MagicNumber">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="MissingSwitchDefault">
+            <property name="severity" value="warning"/>
+        </module>
         <!-- <module name="MissingCtor"/> -->
         <module name="ModifiedControlVariable">
             <property name="severity" value="warning"/>
