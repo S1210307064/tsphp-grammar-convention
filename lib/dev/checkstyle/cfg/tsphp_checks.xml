@@ -73,7 +73,7 @@ Following adoptions are applied to the original file from checkstyle:
     <!-- See http://checkstyle.sf.net/config_header.html   -->
     <module name="Header">
         <property name="headerFile" value="${checkstyle.header.file}"/>
-        <property name="fileExtensions" value="java,g"/>
+        <property name="fileExtensions" value="java, g"/>
     </module>
 
     <module name="TreeWalker">
@@ -350,8 +350,21 @@ Following adoptions are applied to the original file from checkstyle:
         <module name="TypecastParenPad"/>
         <module name="WhitespaceAfter"/>
         <module name="WhitespaceAround"/>
-
     </module>
+
+    <module name="ch.tsphp.grammarconvention.GrammarWalker">
+        <module name="ch.tsphp.grammarconvention.checks.HeaderCheck">
+            <property name="headerFile" value="${checkstyle.header.file}"/>
+        </module>
+        <module name="ch.tsphp.grammarconvention.checks.OptionsIndentationCheck"/>
+        <module name="ch.tsphp.grammarconvention.checks.OptionsSpaceCheck"/>
+        <module name="ch.tsphp.grammarconvention.checks.RuleColonSemicolonCheck"/>
+        <module name="ch.tsphp.grammarconvention.checks.TokensIndentationCheck"/>
+        <module name="ch.tsphp.grammarconvention.checks.TokensNamingCheck"/>
+        <module name="ch.tsphp.grammarconvention.checks.TokensOrderCheck"/>
+        <module name="ch.tsphp.grammarconvention.checks.TokensSpaceCheck"/>
+    </module>
+
     <module name="SuppressionCommentFilter">
         <property name="offCommentFormat" value="CHECKSTYLE\:OFF\:([\w\|]+)"/>
         <property name="onCommentFormat" value="CHECKSTYLE\:ON\:([\w\|]+)"/>
@@ -361,4 +374,5 @@ Following adoptions are applied to the original file from checkstyle:
     <module name="SuppressionFilter">
         <property name="file" value="${suppressions.xml}"/>
     </module>
+
 </module>
