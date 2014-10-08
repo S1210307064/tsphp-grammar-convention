@@ -42,6 +42,29 @@ public class OptionsIndentationCheckTest extends AGrammarWalkerTest
         verifyVisitAndLeaveTokenNotCalled(check);
     }
 
+    /**
+     * see TSPHP-869 OptionsIndentationCheck only for grammar and rule, not within a rule
+     */
+    @Test
+    public void processFiltered_OptionsWithinRule_LogIsNeverCalled()
+            throws CheckstyleException, IOException {
+        OptionsIndentationCheck check = spy(createCheck());
+        String moduleName = "OptionsIndentationCheck";
+        ModuleFactory moduleFactory = createModuleFactory(moduleName, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("rule: (options {greedy = false;} : . )* EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(moduleName, new String[][]{});
+
+        //act
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
+
+        verifyLogItNotCalled(check);
+    }
+
     //Tests for grammar options are covered in OptionsIndentationCheckGrammarTest
     //Tests for rule options are covered in OptionsIndentationCheckRuleTest
 
