@@ -23,12 +23,10 @@ public class RuleColonSemicolonCheck extends AGrammarConventionCheck
 
     @Override
     public void visitToken(final GrammarAST ruleAst, final TokenStream tokenStream) {
-        int childCount = ruleAst.getChildCount();
-        //is actually BLOCK but since BLOCK is using the token before to create the AST it corresponds to the colon AST
-        GrammarAST colon = (GrammarAST) ruleAst.getChild(childCount - 2);
+        GrammarAST colon = getColonAst(ruleAst);
         tokenStream.seek(colon.getToken().getTokenIndex());
         GrammarAST tokenBeforeColon = new GrammarAST(tokenStream.LT(-1));
-        GrammarAST semicolon = (GrammarAST) ruleAst.getChild(childCount - 1);
+        GrammarAST semicolon = (GrammarAST) ruleAst.getChild(ruleAst.getChildCount() - 1);
         tokenStream.seek(semicolon.getToken().getTokenIndex());
         GrammarAST tokenBeforeSemicolon = new GrammarAST(tokenStream.LT(-1));
 
@@ -51,5 +49,17 @@ public class RuleColonSemicolonCheck extends AGrammarConventionCheck
                         + " spaces but was intended by " + semicolonPositionInLine);
             }
         }
+    }
+
+    private GrammarAST getColonAst(GrammarAST ruleAst) {
+        GrammarAST alternatives = (GrammarAST) ruleAst.getChild(ruleAst.getChildCount() - 2);
+        // catch block is optional, if it is there then the alternatives are located at -3
+        if (alternatives.getType() == ANTLRParser.CATCH) {
+            alternatives = (GrammarAST) ruleAst.getChild(ruleAst.getChildCount() - 3);
+        }
+
+        // since the alternatives use an imaginary token BLOCK as root, which in turn is is built by the token before
+        // the alternatives (the COLON), it corresponds to the colon AST
+        return alternatives;
     }
 }

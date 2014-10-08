@@ -475,7 +475,7 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         //act
         processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
 
-        verify(check, times(4)).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        verify(check, times(1)).visitToken(any(GrammarAST.class), any(TokenStream.class));
         verifyLogItNotCalled(check);
     }
 
