@@ -29,11 +29,15 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
+public class OptionsIndentationCheckCombinedGrammarTest extends AGrammarWalkerTest
 {
 
     private static final String MODULE_NAME = "OptionsIndentationCheck";
     private static final String INDENT = "    ";
+
+    protected String getGrammarLine() {
+        return "grammar test;";
+    }
 
     protected String getOptionsLine() {
         return "options{";
@@ -44,6 +48,50 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
     }
 
     @Test
+    public void processFiltered_WithoutOptions_CheckIsNeverCalled()
+            throws CheckstyleException, IOException {
+        OptionsIndentationCheck check = spy(createCheck());
+        String moduleName = "OptionsIndentationCheck";
+        ModuleFactory moduleFactory = createModuleFactory(moduleName, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add(getGrammarLine());
+        lines.add("rule: EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(moduleName, new String[][]{});
+
+        //act
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
+
+        verifyVisitAndLeaveTokenNotCalled(check);
+    }
+
+    /**
+     * see TSPHP-869 OptionsIndentationCheck only for grammar and rule, not within a rule
+     */
+    @Test
+    public void processFiltered_OptionsWithinRule_LogIsNeverCalled()
+            throws CheckstyleException, IOException {
+        OptionsIndentationCheck check = spy(createCheck());
+        String moduleName = "OptionsIndentationCheck";
+        ModuleFactory moduleFactory = createModuleFactory(moduleName, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add(getGrammarLine());
+        lines.add("rule: (options {greedy = false;} : . )* EOF;");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(moduleName, new String[][]{});
+
+        //act
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
+
+        verifyLogItNotCalled(check);
+    }
+
+
+    @Test
     public void processFiltered_NoIndentation_LogCalledForAppropriateLine()
             throws CheckstyleException, IOException {
         OptionsIndentationCheck check = spy(createCheck());
@@ -51,7 +99,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language=Java;");
         lines.add("language = Java;");
@@ -78,7 +126,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(moduleName, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add("language=Java;");
         lines.add(INDENT + "language=Java;");
@@ -105,7 +153,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add("  language=Java;");
         lines.add(INDENT + "language= Java;");
@@ -131,7 +179,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(" language = Java;");
         lines.add("  language= Java;");
@@ -159,7 +207,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language =Java;");
         lines.add("language = Java;");
@@ -187,7 +235,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language");
         lines.add("= Java;");
@@ -214,7 +262,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language =Java;");
         lines.add(INDENT + "language");
@@ -243,7 +291,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language =Java;");
         lines.add(INDENT + "language");
@@ -273,7 +321,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language =Java;");
         lines.add(INDENT + "language");
@@ -314,7 +362,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language=");
         lines.add("Java;");
@@ -341,7 +389,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language =Java;");
         lines.add(INDENT + "language =");
@@ -370,7 +418,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language =Java;");
         lines.add(INDENT + "language=");
@@ -400,7 +448,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language =Java;");
         lines.add(INDENT + "language=");
@@ -442,7 +490,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language =Java;");
         lines.add(INDENT + "language =Java;");
@@ -469,7 +517,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language");
         lines.add(INDENT + INDENT + "=Java;");
@@ -499,7 +547,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language =");
         lines.add(INDENT + INDENT + "Java;");
@@ -529,7 +577,7 @@ public class OptionsIndentationCheckGrammarTest extends AGrammarWalkerTest
         ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
 
         List<String> lines = new ArrayList<>();
-        lines.add("grammar test;");
+        lines.add(getGrammarLine());
         lines.add(getOptionsLine());
         lines.add(INDENT + "language");
         lines.add(INDENT + INDENT + "= ");

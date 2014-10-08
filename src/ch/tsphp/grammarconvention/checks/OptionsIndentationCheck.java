@@ -9,6 +9,7 @@ package ch.tsphp.grammarconvention.checks;
 import ch.tsphp.grammarconvention.AGrammarConventionCheck;
 import org.antlr.grammar.v3.ANTLRParser;
 import org.antlr.runtime.TokenStream;
+import org.antlr.runtime.tree.Tree;
 import org.antlr.tool.GrammarAST;
 
 public class OptionsIndentationCheck extends AGrammarConventionCheck
@@ -23,6 +24,21 @@ public class OptionsIndentationCheck extends AGrammarConventionCheck
 
     @Override
     public void visitToken(final GrammarAST ast, final TokenStream tokenStream) {
+        if (isGrammarOrRule(ast.getParent())) {
+            check(ast);
+        }
+    }
+
+    private boolean isGrammarOrRule(Tree parent) {
+        int parentType = parent.getType();
+        return parentType == ANTLRParser.COMBINED_GRAMMAR
+                || parentType == ANTLRParser.TREE_GRAMMAR
+                || parentType == ANTLRParser.PARSER_GRAMMAR
+                || parentType == ANTLRParser.LEXER_GRAMMAR
+                || parentType == ANTLRParser.RULE;
+    }
+
+    private void check(final GrammarAST ast) {
         final int count = ast.getChildCount();
         for (int i = 0; i < count; ++i) {
             final GrammarAST equalSign = (GrammarAST) ast.getChild(i);

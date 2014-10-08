@@ -6,16 +6,11 @@
 
 package ch.tsphp.grammarconvention.test.integration.checks;
 
-public class OptionsIndentationCheckRuleTest extends OptionsIndentationCheckCombinedGrammarTest
+public class OptionsIndentationCheckLexerGrammarTest extends OptionsIndentationCheckCombinedGrammarTest
 {
 
     @Override
-    public String getOptionsLine() {
-        return "rule options{";
-    }
-
-    @Override
-    public String getRuleLine() {
-        return ": EOF;";
+    protected String getGrammarLine() {
+        return "lexer grammar test;";
     }
 }
