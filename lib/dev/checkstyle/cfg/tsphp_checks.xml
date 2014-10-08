@@ -361,7 +361,11 @@ Following adoptions are applied to the original file from checkstyle:
         <module name="ch.tsphp.grammarconvention.checks.RuleColonSemicolonCheck"/>
         <module name="ch.tsphp.grammarconvention.checks.TokensIndentationCheck"/>
         <module name="ch.tsphp.grammarconvention.checks.TokensNamingCheck"/>
-        <module name="ch.tsphp.grammarconvention.checks.TokensOrderCheck"/>
+        <!-- decided that this rule is rather unpractical, it should be in alphabetical order more or less but it
+        should still be possible to define logical order such as TypeBool, TypeInt, TypeFloat
+         in alphabetical order TypeFloat would need to be before TypeInt
+        -->
+        <!--<module name="ch.tsphp.grammarconvention.checks.TokensOrderCheck"/>-->
         <module name="ch.tsphp.grammarconvention.checks.TokensSpaceCheck"/>
     </module>
 
