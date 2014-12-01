@@ -53,6 +53,10 @@ public class RuleColonSemicolonCheck extends AGrammarConventionCheck
 
     private GrammarAST getColonAst(GrammarAST ruleAst) {
         GrammarAST alternatives = (GrammarAST) ruleAst.getChild(ruleAst.getChildCount() - 2);
+        // finally is optional, if it is there then alternatives are one before
+        if (alternatives.getType() == ANTLRParser.FINALLY) {
+            alternatives = (GrammarAST) ruleAst.getChild(alternatives.getChildIndex() - 1);
+        }
         // catch block is optional, if it is there then alternatives are one before
         if (alternatives.getType() == ANTLRParser.CATCH) {
             alternatives = (GrammarAST) ruleAst.getChild(alternatives.getChildIndex() - 1);

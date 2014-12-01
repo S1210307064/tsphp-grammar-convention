@@ -452,6 +452,37 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
      * see TSPHP-870 RuleColonSemicolon predicts indentation wrong when catch block is used
      */
     @Test
+    public void processFiltered_CorrectWithFinallyBlock_LogNotCalled()
+            throws CheckstyleException, IOException {
+        RuleColonSemicolonCheck check = spy(createCheck());
+
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("ruleA");
+        lines.add(INDENT + ": ruleB");
+        lines.add(INDENT + ";");
+        lines.add("finally{");
+        lines.add("    reportError(re);");
+        lines.add("    recover(input,re);");
+        lines.add("    $type = controller.createErroneousTypeSymbol($start, re);");
+        lines.add("}");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
+
+        verify(check, times(1)).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        verifyLogItNotCalled(check);
+    }
+
+    /**
+     * see TSPHP-870 RuleColonSemicolon predicts indentation wrong when catch block is used
+     */
+    @Test
     public void processFiltered_CorrectWithCatchBlock_LogNotCalled()
             throws CheckstyleException, IOException {
         RuleColonSemicolonCheck check = spy(createCheck());
@@ -464,6 +495,42 @@ public class RuleColonSemicolonCheckTest extends AGrammarWalkerTest
         lines.add(INDENT + ": ruleB");
         lines.add(INDENT + ";");
         lines.add("catch[RecognitionException re]{");
+        lines.add("    reportError(re);");
+        lines.add("    recover(input,re);");
+        lines.add("    $type = controller.createErroneousTypeSymbol($start, re);");
+        lines.add("}");
+        File file = createFile("test.g", lines);
+
+        Configuration config = createChildConfiguration(MODULE_NAME, new String[][]{});
+
+        //act
+        processAndCheckNoAdditionalErrorOccurred(moduleFactory, lines, file, config, 0);
+
+        verify(check, times(1)).visitToken(any(GrammarAST.class), any(TokenStream.class));
+        verifyLogItNotCalled(check);
+    }
+
+    /**
+     * see TSPHP-870 RuleColonSemicolon predicts indentation wrong when catch block is used
+     */
+    @Test
+    public void processFiltered_CorrectWithFinallyAndCatchBlock_LogNotCalled()
+            throws CheckstyleException, IOException {
+        RuleColonSemicolonCheck check = spy(createCheck());
+
+        ModuleFactory moduleFactory = createModuleFactory(MODULE_NAME, check);
+
+        List<String> lines = new ArrayList<>();
+        lines.add("grammar test;");
+        lines.add("ruleA");
+        lines.add(INDENT + ": ruleB");
+        lines.add(INDENT + ";");
+        lines.add("catch[RecognitionException re]{");
+        lines.add("    reportError(re);");
+        lines.add("    recover(input,re);");
+        lines.add("    $type = controller.createErroneousTypeSymbol($start, re);");
+        lines.add("}");
+        lines.add("finally{");
         lines.add("    reportError(re);");
         lines.add("    recover(input,re);");
         lines.add("    $type = controller.createErroneousTypeSymbol($start, re);");

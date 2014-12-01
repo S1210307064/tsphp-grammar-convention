@@ -25,11 +25,14 @@ public class TokensNamingCheck extends OptionsSpaceCheck
 
             final GrammarAST imaginaryToken = (GrammarAST) ast.getChild(i);
             //only naming of imaginary tokens is checked
-            if (imaginaryToken.getChildCount() == 0) {
-                if (!imaginaryToken.getText().equals(imaginaryToken.getText().toUpperCase())) {
-                    logIt(imaginaryToken.getLine(), "imaginary tokens have to be in upper case.");
-                }
+            if (isImaginaryTokenAndNotUpperCase(imaginaryToken)) {
+                logIt(imaginaryToken.getLine(), "imaginary tokens have to be in upper case.");
             }
         }
+    }
+
+    private boolean isImaginaryTokenAndNotUpperCase(GrammarAST imaginaryToken) {
+        return imaginaryToken.getChildCount() == 0
+                && !imaginaryToken.getText().equals(imaginaryToken.getText().toUpperCase());
     }
 }

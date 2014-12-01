@@ -14,7 +14,6 @@ import org.antlr.tool.GrammarAST;
 public class TokensOrderCheck extends AGrammarConventionCheck
 {
 
-    protected String type = "token";
     private boolean isImaginary;
     private boolean haveNotReportedMixed;
     private boolean haveNotReportedOrderImaginary;
